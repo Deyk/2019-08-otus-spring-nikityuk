@@ -2,18 +2,18 @@ package ru.otus.spring.homework01.domain;
 
 public class User {
     private String name;
-    private String surename;
+    private String surname;
 
-    public User(String name, String surename) {
+    public User(String name, String surname) {
         this.name = name;
-        this.surename = surename;
+        this.surname = surname;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getSurename() {
-        return surename;
+    public String getSurname() {
+        return surname;
     }
 }

@@ -4,5 +4,44 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="csvFile" class="ru.otus.spring.homework01.util.CsvFile">
+        <constructor-arg value="quiz.csv"/>
+    </bean>
+
+<!--    <bean id="user" class="ru.otus.spring.homework01.domain.User">-->
+<!--        <constructor-arg index="0" value="default name"/>-->
+<!--        <constructor-arg index="1" value="default surname"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="quizUnit" class="ru.otus.spring.homework01.domain.QuizUnit">-->
+<!--        <constructor-arg index="0" value="default question"/>-->
+<!--        <constructor-arg index="1">-->
+<!--            <list>-->
+<!--                <value>default answer 1</value>-->
+<!--                <value>default answer 2</value>-->
+<!--                <value>default answer 3</value>-->
+<!--                <value>default answer 4</value>-->
+<!--                <value>default answer 5</value>-->
+<!--            </list>-->
+<!--        </constructor-arg>-->
+<!--        <constructor-arg index="2" value="1"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="result" class="ru.otus.spring.homework01.util.Result">-->
+<!--        <constructor-arg value=""/>-->
+<!--    </bean>-->
+
+<!--    <bean id="quizResult" class="ru.otus.spring.homework01.domain.QuizResult">-->
+<!--        <constructor-arg index="0" ref="user"/>-->
+<!--        <constructor-arg index="1" ref="quizUnit"/>-->
+<!--        <constructor-arg index="2" ref="result"/>-->
+<!--    </bean>-->
+
+    <bean id="quizDao" class="ru.otus.spring.homework01.dao.impl.QuizDaoImpl"/>
+
+    <bean id="quizService" class="ru.otus.spring.homework01.service.impl.QuizServiceImpl">
+        <constructor-arg ref="quizDao"/>
+    </bean>
+
 
 </beans>
