@@ -1,9 +1,9 @@
-package ru.otus.spring.homework01.util;
+package ru.otus.spring.homework01.domain;
 
-public class CsvFile {
+public class QuizSourceFile {
     private String filename;
 
-    public CsvFile(String filename) {
+    public QuizSourceFile(String filename) {
         this.filename = filename;
     }
 

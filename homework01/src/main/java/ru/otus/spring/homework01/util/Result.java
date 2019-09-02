@@ -5,7 +5,8 @@ public enum Result {
     B("Good"),
     C("Satisfactory"),
     D("Poor"),
-    E("Awful");
+    E("Awful"),
+    X("No data");
 
     private String title;
 
@@ -13,7 +14,29 @@ public enum Result {
         this.title = title;
     }
 
+    public static Result getResult(int score) {
+        switch (score) {
+            case 5:
+                return A;
+            case 4:
+                return B;
+            case 3:
+                return C;
+            case 2:
+                return D;
+            case 1:
+                return E;
+            default:
+                return X;
+        }
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Result: " + this.getTitle() + "\n";
     }
 }

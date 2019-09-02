@@ -5,8 +5,12 @@ import ru.otus.spring.homework01.domain.QuizUnit;
 import ru.otus.spring.homework01.domain.User;
 import ru.otus.spring.homework01.util.Result;
 
-public interface QuizDao {
-    QuizResult findQuizByUser(User user);
+import java.util.List;
 
-    void addQuizResult(User user, QuizUnit quizUnit, Result result);
+public interface QuizDao {
+    List<QuizResult> findQuizListByUser(User user);
+
+    QuizResult findQuizById(int quizId);
+
+    void addQuizResult(QuizResult result);
 }

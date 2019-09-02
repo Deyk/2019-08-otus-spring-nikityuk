@@ -5,10 +5,12 @@ import ru.otus.spring.homework01.domain.QuizUnit;
 import ru.otus.spring.homework01.domain.User;
 import ru.otus.spring.homework01.util.Result;
 
+import java.util.List;
+
 public interface QuizService {
-    QuizResult getQuizByUser(User user);
+    List<QuizResult> getQuizListByUser(User user);
 
-    void saveQuizResult(User user, QuizUnit quizUnit, Result result);
+    QuizResult getQuizById(int quizId);
 
-    Result countQuizScore(QuizUnit quizUnit);
+    void saveQuizResult(QuizResult result);
 }

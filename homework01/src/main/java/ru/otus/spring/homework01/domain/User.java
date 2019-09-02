@@ -16,4 +16,9 @@ public class User {
     public String getSurname() {
         return surname;
     }
+
+    @Override
+    public String toString() {
+        return "User: " + getName() + " " + getSurname() + "\n";
+    }
 }

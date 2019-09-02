@@ -7,6 +7,8 @@ import ru.otus.spring.homework01.domain.User;
 import ru.otus.spring.homework01.service.QuizService;
 import ru.otus.spring.homework01.util.Result;
 
+import java.util.List;
+
 public class QuizServiceImpl implements QuizService {
     private QuizDao quizDao;
 
@@ -15,17 +17,17 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizResult getQuizByUser(User user) {
-        return quizDao.findQuizByUser(user);
+    public List<QuizResult> getQuizListByUser(User user) {
+        return quizDao.findQuizListByUser(user);
     }
 
     @Override
-    public void saveQuizResult(User user, QuizUnit quizUnit, Result result) {
-        quizDao.addQuizResult(user, quizUnit, result);
+    public QuizResult getQuizById(int quizId) {
+        return quizDao.findQuizById(quizId);
     }
 
     @Override
-    public Result countQuizScore(QuizUnit quizUnit) {
-        return null;
+    public void saveQuizResult(QuizResult result) {
+        quizDao.addQuizResult(result);
     }
 }
