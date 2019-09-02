@@ -1,51 +1,89 @@
 package ru.otus.spring.homework01;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.util.ResourceUtils;
-import ru.otus.spring.homework01.domain.QuizUnit;
-import ru.otus.spring.homework01.domain.User;
-import ru.otus.spring.homework01.util.CsvFile;
+import ru.otus.spring.homework01.domain.*;
+import ru.otus.spring.homework01.service.FileReader;
+import ru.otus.spring.homework01.service.QuizService;
+import ru.otus.spring.homework01.service.impl.FileReaderImpl;
+import ru.otus.spring.homework01.util.Result;
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import static java.lang.System.out;
-import static ru.otus.spring.homework01.util.Constants.CSV_DELIMETER;
 
 public class Main {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        CsvFile csvFile = (CsvFile) context.getBean("csvFile");
+        QuizService quizService = context.getBean(QuizService.class);
+        QuizSourceFile quizSourceFile = (QuizSourceFile) context.getBean("quizSourceFile");
+        FileReader fileReader = new FileReaderImpl();
 
         try (Scanner scanner = new Scanner(System.in)) {
-            File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + csvFile.getFilename());
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line = br.readLine();
-                while (line != null && !line.equalsIgnoreCase("End") ) {
-                    String[] quizStrings = line.split(CSV_DELIMETER);
-                    QuizUnit quizUnit = new QuizUnit(quizStrings[0],
-                            Arrays.asList(Arrays.copyOfRange(quizStrings, 1, quizStrings.length - 1)),
-                            Integer.parseInt(quizStrings[quizStrings.length - 1]));
-
-                    out.printf("%S%n%s%n%s%n", "Welcome to the Quiz!", "Anytime you enter 'end' to close the dialog",
-                            "Please, enter your name...");
-                    String userName = scanner.nextLine().trim();
-
-                    out.printf("%s%n", "Please, enter your surname...");
-                    String userSurname = scanner.nextLine().trim();
-
-                    User user = new User(userName, userSurname);
-
-                    out.printf("%s  %s%n", user.getName(), user.getSurname());
-
-                }
-            } catch (IOException e) {
-                e.getMessage();
-            }
+            List<QuizUnit> quizUnitList = fileReader.readQuiz(quizSourceFile);
+            startQuiz(scanner, quizUnitList, quizService);
         } catch (FileNotFoundException e) {
             e.getMessage();
         }
+    }
+
+    private static void startQuiz(Scanner scanner, List<QuizUnit> quizUnitList, QuizService quizService) {
+        int userAnswer = 0;
+        int score = 0;
+        String userName, userSurname;
+        List<QuizAnswer> quizAnswerList = new ArrayList<>();
+        Random random = new Random();
+
+        out.printf("%S\n%s\n", "Welcome to the Quiz!", "Please, enter your name.");
+        userName = scanner.nextLine().trim();
+
+        out.println("Please, enter your surname.");
+        userSurname = scanner.nextLine().trim();
+
+        User user = new User(userName, userSurname);
+
+        out.printf("%S%s %s\n%s%d%s\n%s\n", "Welcome ", user.getName(), user.getSurname(),
+                "You will be asked ", quizUnitList.size(), " questions, ready? Go!",
+                "For every questions choose the right answer and enter the number.");
+
+        for (QuizUnit quizUnit : quizUnitList) {
+            int rightAnswer = quizUnit.getRightAnswer();
+            List<String> answers = quizUnit.getAnswers();
+
+            // Print quiz unit
+            out.printf("\t%s\n", quizUnit.getQuestion());
+            for (int i = 0; i < answers.size(); i++) {
+                out.printf("\t%d: %s\n", i + 1, answers.get(i));
+            }
+
+            // Get user answer
+            while (true) {
+                String nextLine = scanner.nextLine().trim();
+                if (nextLine.matches("[1-4]")) {
+                    userAnswer = Integer.parseInt(nextLine);
+                    break;
+                } else {
+                    out.println("Please, enter the correct number (from 1 to 4)");
+                }
+            }
+            quizAnswerList.add(new QuizAnswer(quizUnit.getQuizId(), userAnswer));
+
+            out.println("Your answer is " + answers.get(userAnswer - 1));
+            if (userAnswer == rightAnswer) {
+                score++;
+                out.println("Yes, you are right! +1 point");
+            } else {
+                out.println("No, sorry, the right answer is " + answers.get(rightAnswer - 1));
+            }
+            out.println();
+        }
+
+        //Save the result
+        QuizResult quizResult = new QuizResult(random.nextInt(), user, quizAnswerList, Result.getResult(score));
+        quizService.saveQuizResult(quizResult);
     }
 }
