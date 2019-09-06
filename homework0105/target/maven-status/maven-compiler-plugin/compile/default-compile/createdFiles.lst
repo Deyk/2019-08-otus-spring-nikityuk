@@ -1,0 +1,14 @@
+ru\otus\spring\homework01\Main.class
+ru\otus\spring\homework01\domain\QuizResult.class
+ru\otus\spring\homework01\service\FileReader.class
+ru\otus\spring\homework01\domain\QuizAnswer.class
+ru\otus\spring\homework01\domain\QuizSourceFile.class
+ru\otus\spring\homework01\service\QuizService.class
+ru\otus\spring\homework01\service\impl\FileReaderImpl.class
+ru\otus\spring\homework01\dao\QuizDao.class
+ru\otus\spring\homework01\util\Result.class
+ru\otus\spring\homework01\domain\User.class
+ru\otus\spring\homework01\domain\QuizUnit.class
+ru\otus\spring\homework01\service\impl\QuizServiceImpl.class
+ru\otus\spring\homework01\dao\impl\QuizDaoImpl.class
+ru\otus\spring\homework01\util\Constants.class
