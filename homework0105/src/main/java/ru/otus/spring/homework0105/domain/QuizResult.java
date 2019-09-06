@@ -6,19 +6,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class QuizResult {
-    private int quizResultId;
+    private String quizResultId;
     private User user;
     private List<QuizAnswer> quizAnswerList;
     private Result result;
 
-    public QuizResult(int quizResultId, User user, List<QuizAnswer> quizAnswerList, Result result) {
+    public QuizResult(String quizResultId, User user, List<QuizAnswer> quizAnswerList, Result result) {
         this.quizResultId = quizResultId;
         this.user = user;
         this.quizAnswerList = quizAnswerList;
         this.result = result;
     }
 
-    public int getQuizResultId() {
+    public String getQuizResultId() {
         return quizResultId;
     }
 

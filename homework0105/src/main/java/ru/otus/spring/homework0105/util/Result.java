@@ -25,6 +25,7 @@ public enum Result {
             case 2:
                 return D;
             case 1:
+            case 0:
                 return E;
             default:
                 return X;

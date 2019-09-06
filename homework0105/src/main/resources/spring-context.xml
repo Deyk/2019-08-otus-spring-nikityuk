@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="quizSourceFile" class="ru.otus.spring.homework0105.domain.QuizSourceFile">
-        <constructor-arg value="quiz.csv"/>
-    </bean>
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="quizDao" class="ru.otus.spring.homework0105.dao.impl.QuizDaoImpl"/>
 
@@ -14,5 +12,17 @@
         <constructor-arg ref="quizDao"/>
     </bean>
 
+    <bean id="quizRunner" class="ru.otus.spring.homework0105.service.impl.QuizRunnerImpl">
+        <constructor-arg ref="quizService"/>
+    </bean>
+
+    <bean id="fileReader" class="ru.otus.spring.homework0105.service.impl.FileReaderImpl">
+        <constructor-arg index="0">
+            <util:constant static-field="ru.otus.spring.homework0105.util.Constants.QUIZ_FILENAME"/>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <util:constant static-field="ru.otus.spring.homework0105.util.Constants.QUIZ_AMOUNT_OF_COLUMNS"/>
+        </constructor-arg>
+    </bean>
 
 </beans>
