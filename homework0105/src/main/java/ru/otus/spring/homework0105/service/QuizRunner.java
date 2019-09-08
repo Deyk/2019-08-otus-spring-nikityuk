@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface QuizRunner {
 
-    void startQuiz(List<QuizUnit> quizUnitList);
+    void startQuiz();
 }
