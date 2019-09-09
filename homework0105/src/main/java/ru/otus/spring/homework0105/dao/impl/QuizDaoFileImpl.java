@@ -3,7 +3,6 @@ package ru.otus.spring.homework0105.dao.impl;
 import org.springframework.util.ResourceUtils;
 import ru.otus.spring.homework0105.dao.QuizDao;
 import ru.otus.spring.homework0105.dao.ReadQuizException;
-import ru.otus.spring.homework0105.domain.QuizResult;
 import ru.otus.spring.homework0105.domain.QuizUnit;
 
 import java.io.*;
@@ -12,9 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static java.lang.System.out;
-
-public class QuizDaoImpl implements QuizDao {
+public class QuizDaoFileImpl implements QuizDao {
 
     public static final String QUIZ_FILENAME = "quiz.csv";
     public static final int QUIZ_AMOUNT_OF_COLUMNS = 6;
@@ -23,18 +20,13 @@ public class QuizDaoImpl implements QuizDao {
     private String sourceFileName;
     private int amountOfColumns;
 
-    public QuizDaoImpl(String sourceFileName, int amountOfColumns) {
+    public QuizDaoFileImpl(String sourceFileName, int amountOfColumns) {
         this.sourceFileName = sourceFileName;
         this.amountOfColumns = amountOfColumns;
     }
 
     @Override
-    public void saveQuizResult(QuizResult result) {
-        out.println("Quiz result saved: \n" + result);
-    }
-
-    @Override
-    public List<QuizUnit> readQuizFromFile() throws ReadQuizException {
+    public List<QuizUnit> readQuiz() throws ReadQuizException {
         List<QuizUnit> quizUnitList = new ArrayList<>();
         File file;
         try {

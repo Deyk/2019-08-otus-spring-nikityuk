@@ -6,20 +6,25 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="quizDao" class="ru.otus.spring.homework0105.dao.impl.QuizDaoImpl">
+    <bean id="quizDaoFile" class="ru.otus.spring.homework0105.dao.impl.QuizDaoFileImpl">
         <constructor-arg index="0">
-            <util:constant static-field="ru.otus.spring.homework0105.dao.impl.QuizDaoImpl.QUIZ_FILENAME"/>
+            <util:constant static-field="ru.otus.spring.homework0105.dao.impl.QuizDaoFileImpl.QUIZ_FILENAME"/>
         </constructor-arg>
         <constructor-arg index="1">
-            <util:constant static-field="ru.otus.spring.homework0105.dao.impl.QuizDaoImpl.QUIZ_AMOUNT_OF_COLUMNS"/>
+            <util:constant static-field="ru.otus.spring.homework0105.dao.impl.QuizDaoFileImpl.QUIZ_AMOUNT_OF_COLUMNS"/>
         </constructor-arg>
     </bean>
 
     <bean id="quizRunner" class="ru.otus.spring.homework0105.service.impl.QuizRunnerImpl">
-        <constructor-arg index="0" ref="userService"/>
-        <constructor-arg index="1" ref="quizDao"/>
+        <constructor-arg index="0" ref="quizDaoFile"/>
+        <constructor-arg index="1" ref="quizIoServiceConsole"/>
     </bean>
 
-    <bean id="userService" class="ru.otus.spring.homework0105.service.impl.UserServiceImpl"/>
+    <bean id="quizIoServiceConsole"
+          class="ru.otus.spring.homework0105.service.impl.QuizIoServiceConsoleImpl">
+        <constructor-arg index="0">
+            <util:constant static-field="java.lang.System.in"/>
+        </constructor-arg>
+    </bean>
 
 </beans>

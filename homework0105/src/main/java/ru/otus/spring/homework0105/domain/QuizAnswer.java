@@ -19,6 +19,6 @@ public class QuizAnswer {
 
     @Override
     public String toString() {
-        return "QuizId: " + quizId + " Answer: " + answer + "\n";
+        return "QuizUnitId: " + quizId + " Answer: " + answer + "\n";
     }
 }
