@@ -1,5 +1,6 @@
 package ru.otus.spring.homework0105.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.spring.homework0105.dao.QuizDao;
 import ru.otus.spring.homework0105.dao.ReadQuizException;
 import ru.otus.spring.homework0105.domain.QuizAnswer;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static java.lang.System.out;
 
+@Service
 public class QuizRunnerImpl implements QuizRunner {
     private QuizDao quizDao;
     private QuizIoService quizIoService;

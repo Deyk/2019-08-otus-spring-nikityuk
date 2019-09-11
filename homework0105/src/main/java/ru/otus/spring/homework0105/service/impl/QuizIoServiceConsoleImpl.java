@@ -1,5 +1,6 @@
 package ru.otus.spring.homework0105.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.spring.homework0105.domain.QuizAnswer;
 import ru.otus.spring.homework0105.domain.QuizResult;
 import ru.otus.spring.homework0105.domain.QuizUnit;
@@ -7,18 +8,18 @@ import ru.otus.spring.homework0105.domain.User;
 import ru.otus.spring.homework0105.service.QuizIoService;
 import ru.otus.spring.homework0105.util.Result;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
 import static java.lang.System.out;
 
+@Service
 public class QuizIoServiceConsoleImpl implements QuizIoService {
     private Scanner scanner;
 
-    public QuizIoServiceConsoleImpl(InputStream source) {
-        scanner = new Scanner(source);
+    public QuizIoServiceConsoleImpl() {
+        scanner = new Scanner(System.in);
     }
 
     @Override

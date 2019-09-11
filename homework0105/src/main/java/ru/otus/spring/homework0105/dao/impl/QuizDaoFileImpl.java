@@ -1,5 +1,6 @@
 package ru.otus.spring.homework0105.dao.impl;
 
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import ru.otus.spring.homework0105.dao.QuizDao;
 import ru.otus.spring.homework0105.dao.ReadQuizException;
@@ -11,18 +12,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class QuizDaoFileImpl implements QuizDao {
 
-    public static final String QUIZ_FILENAME = "quiz.csv";
-    public static final int QUIZ_AMOUNT_OF_COLUMNS = 6;
+    private static final String QUIZ_FILENAME = "quiz.csv";
+    private static final int QUIZ_AMOUNT_OF_COLUMNS = 6;
     private static final String CSV_DELIMITER = ",";
 
     private String sourceFileName;
     private int amountOfColumns;
 
-    public QuizDaoFileImpl(String sourceFileName, int amountOfColumns) {
-        this.sourceFileName = sourceFileName;
-        this.amountOfColumns = amountOfColumns;
+    public QuizDaoFileImpl() {
+        this.sourceFileName = QUIZ_FILENAME;
+        this.amountOfColumns = QUIZ_AMOUNT_OF_COLUMNS;
     }
 
     @Override
