@@ -19,11 +19,11 @@ import static java.lang.System.out;
 
 @Service
 public class QuizIoServiceConsoleImpl implements QuizIoService {
-    private Scanner scanner;
-    private MessageSource ms;
-    private Locale currentLocale;
+    private final Scanner scanner;
+    private final MessageSource ms;
+    private final Locale currentLocale;
 
-    public QuizIoServiceConsoleImpl(MessageSource ms) {
+    public QuizIoServiceConsoleImpl(final MessageSource ms) {
         this.ms = ms;
         this.currentLocale = LocaleContextHolder.getLocale();
         this.scanner = new Scanner(System.in);
