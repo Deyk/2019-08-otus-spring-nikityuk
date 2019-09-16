@@ -1,28 +1,29 @@
 package ru.otus.spring.homework0105.dao.impl;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import ru.otus.spring.homework0105.dao.QuizDao;
 import ru.otus.spring.homework0105.dao.ReadQuizException;
 import ru.otus.spring.homework0105.domain.QuizUnit;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+@Service
 public class QuizDaoFileImpl implements QuizDao {
-
-    public static final String QUIZ_FILENAME = "quiz.csv";
-    public static final int QUIZ_AMOUNT_OF_COLUMNS = 6;
-    private static final String CSV_DELIMITER = ",";
-
     private String sourceFileName;
     private int amountOfColumns;
+    private String csvDelimiter;
 
-    public QuizDaoFileImpl(String sourceFileName, int amountOfColumns) {
-        this.sourceFileName = sourceFileName;
-        this.amountOfColumns = amountOfColumns;
+    public QuizDaoFileImpl(@Value("${quiz.source.filename}") String quizFilename,
+                           @Value("${quiz.amount.of.columns}") int quizAmountOfColumns,
+                           @Value("${quiz.csv.delimiter}") String csvDelimiter) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        this.sourceFileName = quizFilename + "_" + currentLocale + ".csv";
+        this.amountOfColumns = quizAmountOfColumns;
+        this.csvDelimiter = csvDelimiter;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class QuizDaoFileImpl implements QuizDao {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] quizStrings = line.split(CSV_DELIMITER);
+                String[] quizStrings = line.split(csvDelimiter);
                 if (isGoodFormatted(quizStrings)) {
                     quizUnitList.add(new QuizUnit(UUID.randomUUID().toString(), quizStrings[0],
                             Arrays.asList(Arrays.copyOfRange(quizStrings, 1, quizStrings.length - 1)),

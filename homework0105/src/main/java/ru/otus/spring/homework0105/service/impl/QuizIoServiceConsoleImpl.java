@@ -1,5 +1,8 @@
 package ru.otus.spring.homework0105.service.impl;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
 import ru.otus.spring.homework0105.domain.QuizAnswer;
 import ru.otus.spring.homework0105.domain.QuizResult;
 import ru.otus.spring.homework0105.domain.QuizUnit;
@@ -7,35 +10,39 @@ import ru.otus.spring.homework0105.domain.User;
 import ru.otus.spring.homework0105.service.QuizIoService;
 import ru.otus.spring.homework0105.util.Result;
 
-import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.UUID;
 
 import static java.lang.System.out;
 
+@Service
 public class QuizIoServiceConsoleImpl implements QuizIoService {
-    private Scanner scanner;
+    private final Scanner scanner;
+    private final MessageSource ms;
+    private final Locale currentLocale;
 
-    public QuizIoServiceConsoleImpl(InputStream source) {
-        scanner = new Scanner(source);
+    public QuizIoServiceConsoleImpl(final MessageSource ms) {
+        this.ms = ms;
+        this.currentLocale = LocaleContextHolder.getLocale();
+        this.scanner = new Scanner(System.in);
     }
 
     @Override
     public void printWelcome() {
-        out.printf("%S\n", "Welcome to the Quiz!");
+        out.println(ms.getMessage("quiz.welcome", null, currentLocale));
     }
 
     @Override
     public void printGeneralInfo(int quizSize, User user) {
-        out.printf("%S%s %s\n%s%d%s\n%s\n", "Welcome ", user.getName(), user.getSurname(),
-                "You will be asked ", quizSize, " questions, ready? Go!",
-                "For every questions choose the right answer and enter the number.");
+        out.println(ms.getMessage("quiz.general.info",
+                new String[]{user.getName(), user.getSurname(), Integer.toString(quizSize)}, currentLocale));
     }
 
     @Override
     public void printUserAnswer(String userAnswer) {
-        out.println("Your answer is " + userAnswer);
+        out.println(ms.getMessage("quiz.user.answer", new String[]{userAnswer}, currentLocale));
     }
 
     @Override
@@ -48,27 +55,27 @@ public class QuizIoServiceConsoleImpl implements QuizIoService {
 
     @Override
     public void printRightAnswerInfo() {
-        out.println("Yes, you are right! +1 point");
+        out.println(ms.getMessage("quiz.right.answer.info", null, currentLocale));
     }
 
     @Override
     public void printWrongAnswerInfo(String rightAnswer) {
-        out.println("No, sorry, the right answer is " + rightAnswer);
+        out.println(ms.getMessage("quiz.wrong.answer.info", new String[]{rightAnswer}, currentLocale));
     }
 
     @Override
     public void printQuizResult(List<QuizAnswer> quizAnswerList, User user, int score) {
         QuizResult quizResult = new QuizResult(UUID.randomUUID().toString(), user, quizAnswerList, Result.getResult(score));
-        out.println("Quiz result is: \n" + quizResult);
+        out.println(ms.getMessage("quiz.result", new String[]{quizResult.toString()}, currentLocale));
     }
 
     @Override
     public User getUserInfo() {
         String userName, userSurname;
-        out.println("Please, enter your name.");
+        out.println(ms.getMessage("quiz.user.name", null, currentLocale));
         userName = scanner.nextLine().trim();
 
-        out.println("Please, enter your surname.");
+        out.println(ms.getMessage("quiz.user.surname", null, currentLocale));
         userSurname = scanner.nextLine().trim();
         return new User(userName, userSurname);
     }
@@ -80,7 +87,7 @@ public class QuizIoServiceConsoleImpl implements QuizIoService {
             if (nextLine.matches("[1-4]")) {
                 return Integer.parseInt(nextLine);
             } else {
-                out.println("Please, enter the correct number (from 1 to 4)");
+                out.println(ms.getMessage("quiz.correct.number", null, currentLocale));
             }
         }
     }
