@@ -1,12 +1,12 @@
 package ru.otus.spring.homework0105.dao.impl;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import ru.otus.spring.homework0105.dao.QuizDao;
 import ru.otus.spring.homework0105.dao.ReadQuizException;
 import ru.otus.spring.homework0105.domain.QuizUnit;
+import ru.otus.spring.homework0105.settings.QuizSettings;
 
 import java.io.*;
 import java.util.*;
@@ -17,13 +17,11 @@ public class QuizDaoFileImpl implements QuizDao {
     private int amountOfColumns;
     private String csvDelimiter;
 
-    public QuizDaoFileImpl(@Value("${quiz.source.filename}") String quizFilename,
-                           @Value("${quiz.amount.of.columns}") int quizAmountOfColumns,
-                           @Value("${quiz.csv.delimiter}") String csvDelimiter) {
+    public QuizDaoFileImpl(QuizSettings quizSettings) {
         Locale currentLocale = LocaleContextHolder.getLocale();
-        this.sourceFileName = quizFilename + "_" + currentLocale + ".csv";
-        this.amountOfColumns = quizAmountOfColumns;
-        this.csvDelimiter = csvDelimiter;
+        this.sourceFileName = quizSettings.getFilename() + "_" + currentLocale + ".csv";
+        this.amountOfColumns = quizSettings.getAmountOfColumn();
+        this.csvDelimiter = quizSettings.getCsvDelimiter();
     }
 
     @Override
