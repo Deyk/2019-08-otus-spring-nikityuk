@@ -7,6 +7,7 @@ Contains homework for Spring Framework cours by Otus.
 # Homework:
 1) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework01 
 2) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework02 
+3) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework03 
 
 Useful links:
 * Course page - https://otus.ru/learning/31566/#/
