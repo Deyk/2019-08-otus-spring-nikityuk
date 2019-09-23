@@ -1,0 +1,7 @@
+${AnsiColor.BLUE}${AnsiBackground.BRIGHT_WHITE}                                                     ${application.title}        ${application.version}
+${AnsiColor.BRIGHT_YELLOW}${AnsiBackground.BRIGHT_WHITE} _                 .    .        _                                                 __  __        \
+${AnsiColor.BRIGHT_GREEN}${AnsiBackground.BRIGHT_WHITE} |      ,  _  / `  |    |        \ ___    ___    ___    __.  , _ , _     ___       |   |    __.  |   ,   ___    ___.   ___
+${AnsiColor.BRIGHT_RED}${AnsiBackground.BRIGHT_WHITE} |      |  |  | |  |    |        |/   \ .'   ` .'   ` .'   \ |' `|' `. .'   `      |___|  .'   \ |  /   /   ` .'   ` .'   `
+${AnsiColor.BRIGHT_WHITE}${AnsiBackground.BRIGHT_WHITE} |      `  ^  ' |  |    |        |    ` |----' |      |    | |   |   | |----'      |   |  |    | |-<   |    | |    | |----'
+${AnsiColor.BRIGHT_CYAN}${AnsiBackground.BRIGHT_WHITE} /       \/ \/  / /\__ /\__      `___,' `.___,  `._.'  `._.' /   '   / `.___,      /   /   `._.' /  \_ `.__/|  `---| `.___,
+                                                                                                               \___/
