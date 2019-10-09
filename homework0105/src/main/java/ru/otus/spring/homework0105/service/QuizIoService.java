@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface QuizIoService {
 
+    void printUserLoginInfo();
+
     void printWelcome();
 
     void printGeneralInfo(int quizSize, User user);
@@ -24,5 +26,5 @@ public interface QuizIoService {
 
     int getUserAnswer();
 
-    User getUserInfo();
+    String getLoginError();
 }

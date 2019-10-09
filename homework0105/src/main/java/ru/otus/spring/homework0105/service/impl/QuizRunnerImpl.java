@@ -25,14 +25,12 @@ public class QuizRunnerImpl implements QuizRunner {
     }
 
     @Override
-    public void startQuiz() {
+    public void startQuiz(User user) {
         try {
             List<QuizUnit> quizUnitList = quizDao.readQuiz();
             List<QuizAnswer> quizAnswerList = new ArrayList<>();
 
             quizIoService.printWelcome();
-            User user = quizIoService.getUserInfo();
-
             quizIoService.printGeneralInfo(quizUnitList.size(), user);
 
             int score = askQuestions(quizUnitList, quizAnswerList);
