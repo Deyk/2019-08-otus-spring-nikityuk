@@ -24,12 +24,16 @@ public class QuizDaoFileImpl implements QuizDao {
         this.csvDelimiter = quizSettings.getCsvDelimiter();
     }
 
+    String getSourceFileName() {
+        return sourceFileName;
+    }
+
     @Override
     public List<QuizUnit> readQuiz() throws ReadQuizException {
         List<QuizUnit> quizUnitList = new ArrayList<>();
         File file;
         try {
-            file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + sourceFileName);
+            file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + this.getSourceFileName());
         } catch (FileNotFoundException e) {
             throw new ReadQuizException("[ERROR] Can't read the quiz: \n" + e.getMessage());
         }

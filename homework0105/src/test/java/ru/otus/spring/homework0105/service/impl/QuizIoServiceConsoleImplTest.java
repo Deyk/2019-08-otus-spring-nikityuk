@@ -44,7 +44,7 @@ class QuizIoServiceConsoleImplTest {
     @ParameterizedTest
     @DisplayName("Выводит информацию о пользователе")
     @ValueSource(ints = {Integer.MIN_VALUE, 0, Integer.MAX_VALUE})
-    void printGeneralInfo(int inputSize) {
+    void shouldPrintGeneralInfo(int inputSize) {
         User user = new User("Name", "Surname");
         quizIoService.printGeneralInfo(inputSize, user);
         verify(messageService, times(1)).printMessage(any());
@@ -54,7 +54,7 @@ class QuizIoServiceConsoleImplTest {
     @ParameterizedTest
     @DisplayName("Выводит вопросы теста")
     @MethodSource(value = "printQuizUnitTestValues")
-    void printQuizUnit(List<String> inputQuizAnswers) {
+    void shouldPrintQuizUnit(List<String> inputQuizAnswers) {
         when(quizUnit.getQuestion()).thenReturn("");
         quizIoService.printQuizUnit(quizUnit, inputQuizAnswers);
         verify(messageService, times(4)).printMessage(anyString());

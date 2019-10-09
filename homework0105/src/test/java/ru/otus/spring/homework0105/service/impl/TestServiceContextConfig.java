@@ -9,5 +9,5 @@ import ru.otus.spring.homework0105.service.MessageService;
 @SpringBootConfiguration
 @EnableConfigurationProperties
 @ComponentScan({"ru.otus.spring.homework0105.service"})
-public class TestContextConfig {
+public class TestServiceContextConfig {
 }

@@ -1,0 +1,4 @@
+quiz:
+  filename: "quiz-test"
+  amount-of-column: 6
+  csv-delimiter: ","
