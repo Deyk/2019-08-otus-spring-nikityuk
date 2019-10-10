@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-/homework0105/target
+/quiz/target
 
 # Log file
 *.log
