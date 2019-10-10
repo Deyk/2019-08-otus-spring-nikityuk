@@ -8,14 +8,14 @@ import ru.otus.spring.quiz.service.QuizIoService;
 
 @Configuration
 @SpringBootApplication
-public class Application {
+public class QuizApplication {
 
-    public Application(ApplicationContext applicationContext) {
+    public QuizApplication(ApplicationContext applicationContext) {
         QuizIoService quizIoService = applicationContext.getBean(QuizIoService.class);
         quizIoService.printUserLoginInfo();
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(QuizApplication.class);
     }
 }
