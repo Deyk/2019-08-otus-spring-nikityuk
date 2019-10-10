@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 /quiz/target
+/library/target
 
 # Log file
 *.log
