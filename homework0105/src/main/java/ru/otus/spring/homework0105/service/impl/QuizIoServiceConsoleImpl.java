@@ -41,6 +41,11 @@ public class QuizIoServiceConsoleImpl implements QuizIoService {
     }
 
     @Override
+    public void printUserLoginInfo() {
+        messageService.printMessage(messageSource.getMessage("quiz.user.login.info", null, currentLocale));
+    }
+
+    @Override
     public void printWelcome() {
         messageService.printMessage(messageSource.getMessage("quiz.welcome", null, currentLocale));
     }
@@ -81,17 +86,6 @@ public class QuizIoServiceConsoleImpl implements QuizIoService {
     }
 
     @Override
-    public User getUserInfo() {
-        String userName, userSurname;
-        messageService.printMessage(messageSource.getMessage("quiz.user.name", null, currentLocale));
-        userName = scanner.nextLine().trim();
-
-        messageService.printMessage(messageSource.getMessage("quiz.user.surname", null, currentLocale));
-        userSurname = scanner.nextLine().trim();
-        return new User(userName, userSurname);
-    }
-
-    @Override
     public int getUserAnswer() {
         while (true) {
             String nextLine = scanner.nextLine().trim();
@@ -101,5 +95,10 @@ public class QuizIoServiceConsoleImpl implements QuizIoService {
                 messageService.printMessage(messageSource.getMessage("quiz.correct.number", null, currentLocale));
             }
         }
+    }
+
+    @Override
+    public String getLoginError() {
+        return messageSource.getMessage("quiz.login.error", null, currentLocale);
     }
 }

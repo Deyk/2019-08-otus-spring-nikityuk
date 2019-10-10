@@ -2,3 +2,7 @@ quiz:
   filename: "quiz"
   amount-of-column: 6
   csv-delimiter: ","
+
+logging:
+  level:
+    root: ERROR
