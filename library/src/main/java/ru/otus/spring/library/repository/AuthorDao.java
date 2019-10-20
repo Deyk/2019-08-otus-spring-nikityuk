@@ -1,15 +1,17 @@
-package ru.otus.spring.library.service;
+package ru.otus.spring.library.repository;
 
 import ru.otus.spring.library.domain.Author;
 
 import java.util.List;
 
-public interface AuthorService {
+public interface AuthorDao {
+    Author insertAuthor(String name);
+
     Author updateAuthor(Author author);
 
     Author getAuthorById(long id);
 
-    Author deleteAuthorById(long Id);
+    void deleteAuthorById(long Id);
 
     List<Author> getAllAuthors();
 }

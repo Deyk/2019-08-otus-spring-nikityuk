@@ -1,24 +1,19 @@
 package ru.otus.spring.library.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 public class Book {
     private long id;
     private String title;
-
-    public Book(long id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public String toString() {
-        return "Book id: " + getId() + ", title: " + getTitle() + "\n";
-    }
+    private List<Author> authors;
+//    private List<Genre> genres;
 }

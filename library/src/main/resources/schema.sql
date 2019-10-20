@@ -1,7 +1,16 @@
-DROP TABLE IF EXISTS USER;
-CREATE TABLE USER
+drop table if exists author;
+create table author
 (
-    ID       LONG PRIMARY KEY,
-    LOGIN    VARCHAR(255),
-    PASSWORD VARCHAR(255)
+    id bigserial,
+    name varchar(255),
+    primary key (id)
+);
+
+drop table if exists book;
+create table book
+(
+    id bigserial,
+    title     varchar(255),
+    author_id long references author (id) on update cascade on delete cascade,
+    primary key (id)
 );
