@@ -11,7 +11,7 @@ public interface BookDao {
 
     Book getBookById(long id) throws JdbcRepositoryException;
 
-    Book deleteBookById(long id);
+    int deleteBookById(long id);
 
     List<Book> getAllBooks();
 }

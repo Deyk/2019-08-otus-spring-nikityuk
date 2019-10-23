@@ -9,11 +9,13 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.repository.AuthorDao;
+import ru.otus.spring.library.repository.JdbcRepositoryException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AuthorDaoJdbc implements AuthorDao {
@@ -34,31 +36,34 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author updateAuthor(Author author) {
+    public int updateAuthor(Author author) throws JdbcRepositoryException {
+        String oldName = this.getAuthorById(author.getId()).getName();
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", author.getId())
-                .addValue("name", author.getName());
-        insertAuthor.executeBatch(params);
-        return author;
+                .addValue("name", author.getName())
+                .addValue("oldName", oldName);
+        return operations.update("update author set name = :name where name = :oldName", params);
     }
 
     @Override
-    public Author getAuthorById(long id) {
+    public Author getAuthorById(long id) throws JdbcRepositoryException {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);
-        return operations.queryForObject("select * from author where id = :id", params, new AuthorMapper());
+        return Optional.ofNullable(
+                operations.queryForObject("select * from author where id = :id", params, new AuthorMapper()))
+                .orElseThrow(() -> new JdbcRepositoryException("Returned author is null"));
     }
 
     @Override
-    public void deleteAuthorById(long id) {
+    public int deleteAuthorById(long id) throws JdbcRepositoryException {
+        String oldName = this.getAuthorById(id).getName();
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
-        operations.update("delete from authors where id = :id", params);
+                .addValue("oldName", oldName);
+        return operations.update("delete from author where name = :oldName", params);
     }
 
     @Override
     public List<Author> getAllAuthors() {
-        return operations.query("select * from authors", new AuthorMapper());
+        return operations.query("select * from author", new AuthorMapper());
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

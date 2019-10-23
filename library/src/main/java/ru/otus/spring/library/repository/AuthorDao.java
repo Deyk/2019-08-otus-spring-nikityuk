@@ -7,11 +7,11 @@ import java.util.List;
 public interface AuthorDao {
     Author insertAuthor(String name);
 
-    Author updateAuthor(Author author);
+    int updateAuthor(Author author) throws JdbcRepositoryException;
 
-    Author getAuthorById(long id);
+    Author getAuthorById(long id) throws JdbcRepositoryException;
 
-    void deleteAuthorById(long Id);
+    int deleteAuthorById(long Id) throws JdbcRepositoryException;
 
     List<Author> getAllAuthors();
 }

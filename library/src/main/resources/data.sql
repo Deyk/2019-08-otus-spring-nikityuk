@@ -1,12 +1,12 @@
-insert into author (name)
-values ('author_01'),
-       ('author_02'),
-       ('author_03');
+insert into book (title)
+values ('title_01'),
+       ('title_02'),
+       ('title_03');
 
-insert into book (title, author_id)
-values ('title_01', 1),
-       ('title_02', 1),
-       ('title_02', 2),
-       ('title_03', 1),
-       ('title_03', 2),
-       ('title_03', 3);
+insert into author (name, book_id)
+values ('author_01', 1),
+       ('author_02', 1),
+       ('author_02', 2),
+       ('author_03', 1),
+       ('author_03', 2),
+       ('author_03', 3);

@@ -5,15 +5,19 @@ import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.repository.BookDao;
 import ru.otus.spring.library.repository.JdbcRepositoryException;
 import ru.otus.spring.library.service.BookService;
+import ru.otus.spring.library.service.LibraryServiceException;
+import ru.otus.spring.library.service.MessageService;
 
 import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
+    private final MessageService ms;
 
-    public BookServiceImpl(BookDao bookDao) {
+    public BookServiceImpl(BookDao bookDao, MessageService ms) {
         this.bookDao = bookDao;
+        this.ms = ms;
     }
 
     @Override
@@ -22,17 +26,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookById(long id) {
-        try {
-            return bookDao.getBookById(id);
-        } catch (JdbcRepositoryException e) {
-            e.getMessage();
-        }
+    public Book updateBook(long id, String title, long authorId) {
         return null;
     }
 
     @Override
-    public Book deleteBookById(long id) {
+    public Book getBookById(long id) throws LibraryServiceException {
+        try {
+            return bookDao.getBookById(id);
+        } catch (JdbcRepositoryException e) {
+            ms.printMessage(e.getMessage());
+            throw new LibraryServiceException("Can't get book with id: " + id);
+        }
+    }
+
+    @Override
+    public int deleteBookById(long id) {
         return bookDao.deleteBookById(id);
     }
 
