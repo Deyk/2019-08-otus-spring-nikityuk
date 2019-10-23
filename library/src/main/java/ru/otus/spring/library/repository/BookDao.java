@@ -7,7 +7,7 @@ import java.util.List;
 public interface BookDao {
     Book insertBook(String title, long authorId);
 
-    Book updateBook(Book book);
+    int updateBook(long id, String title, long authorId) throws JdbcRepositoryException;
 
     Book getBookById(long id) throws JdbcRepositoryException;
 

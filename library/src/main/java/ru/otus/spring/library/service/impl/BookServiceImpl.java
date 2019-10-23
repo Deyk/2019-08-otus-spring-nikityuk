@@ -26,8 +26,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBook(long id, String title, long authorId) {
-        return null;
+    public int updateBook(long id, String title, long authorId) throws LibraryServiceException {
+        try {
+            return bookDao.updateBook(id, title, authorId);
+        } catch (JdbcRepositoryException e) {
+            ms.printMessage(e.getMessage());
+            throw new LibraryServiceException("Can't update book with id: " + id);
+        }
     }
 
     @Override

@@ -34,13 +34,17 @@ public class BookDaoJdbc implements BookDao {
                 .addValue("title", title)
                 .addValue("author_id", authorId);
         Number key = insertBook.executeAndReturnKey(params);
-        Author author = new Author();
+        Author author = new Author(); //TODO
         return new Book(key.longValue(), title, Collections.singletonList(author));
     }
 
     @Override
-    public Book updateBook(Book book) {
-        return null;
+    public int updateBook(long id, String title, long authorId) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("title", title);
+        //TODO
+        return operations.update("update book set title = :title where id = :id", params);
     }
 
     @Override
@@ -62,6 +66,8 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getAllBooks() {
-        return operations.query("select * from book", new AllBooksResultSetExtractor());
+        return operations.query("" +
+                "select b.id, b.title, a.id author_id, a.name author_name " +
+                "from book b left join author a on b.id = a.book_id ", new AllBooksResultSetExtractor());
     }
 }

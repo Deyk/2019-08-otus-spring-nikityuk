@@ -7,7 +7,7 @@ import java.util.List;
 public interface AuthorService {
     Author insertAuthor(String name);
 
-    int updateAuthor(Author author) throws LibraryServiceException;
+    int updateAuthor(long id, String name) throws LibraryServiceException;
 
     Author getAuthorById(long id) throws LibraryServiceException;
 

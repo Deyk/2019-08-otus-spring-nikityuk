@@ -23,8 +23,9 @@ public class AllBooksResultSetExtractor implements ResultSetExtractor<List<Book>
             if (book == null || id != book.getId()) {
                 String title = rs.getString("title");
                 authors = new ArrayList<>();
-                book = new Book(id, title, authors);
                 extractAuthor(rs, authors);
+                book = new Book(id, title, authors);
+                books.add(book);
             } else {
                 extractAuthor(rs, authors);
             }
