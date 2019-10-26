@@ -21,8 +21,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book addBook(String title, String authorName) {
-        return bookDao.insertBook(title, authorName);
+    public Book addBook(String title, String authorName) throws LibraryServiceException {
+        try {
+            return bookDao.insertBook(title, authorName);
+        } catch (JdbcRepositoryException e) {
+            ms.printMessage(e.getMessage());
+            throw new LibraryServiceException("Can't add book with title: " + title + ", author: " + authorName);
+        }
     }
 
     @Override

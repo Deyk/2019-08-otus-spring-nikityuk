@@ -18,7 +18,11 @@ public class AuthorShellService {
 
     @ShellMethod(value = "Add new author", key = {"aa", "addAuthor"})
     public void addAuthor(String name) {
-        ms.printMessage(authorService.insertAuthor(name) + " is created");
+        try {
+            ms.printMessage(authorService.insertAuthor(name) + " is created");
+        } catch (LibraryServiceException e) {
+            ms.printMessage(e.getMessage());
+        }
     }
 
     @ShellMethod(value = "Update existing author", key = {"ua", "updateAuthor"})

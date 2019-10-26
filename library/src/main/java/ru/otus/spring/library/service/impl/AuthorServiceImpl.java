@@ -21,8 +21,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author insertAuthor(String name) {
-        return authorDao.insertAuthor(name);
+    public Author insertAuthor(String name) throws LibraryServiceException {
+        try {
+            return authorDao.insertAuthor(name);
+        } catch (JdbcRepositoryException e) {
+            ms.printMessage(e.getMessage());
+            throw new LibraryServiceException("Can't add author: " + name);
+        }
     }
 
     @Override

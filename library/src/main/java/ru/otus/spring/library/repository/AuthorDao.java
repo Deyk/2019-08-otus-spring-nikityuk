@@ -6,7 +6,7 @@ import java.util.BitSet;
 import java.util.List;
 
 public interface AuthorDao {
-    Author insertAuthor(String name);
+    Author insertAuthor(String name) throws JdbcRepositoryException;
 
     int updateAuthor(Author author) throws JdbcRepositoryException;
 

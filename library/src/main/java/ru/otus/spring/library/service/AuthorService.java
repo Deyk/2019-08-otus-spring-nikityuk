@@ -5,7 +5,7 @@ import ru.otus.spring.library.domain.Author;
 import java.util.List;
 
 public interface AuthorService {
-    Author insertAuthor(String name);
+    Author insertAuthor(String name) throws LibraryServiceException;
 
     int updateAuthor(long id, String name) throws LibraryServiceException;
 

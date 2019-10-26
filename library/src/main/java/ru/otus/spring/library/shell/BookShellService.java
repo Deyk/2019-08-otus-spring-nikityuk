@@ -19,7 +19,11 @@ public class BookShellService {
 
     @ShellMethod(value = "Add new book with author", key = {"ab", "addBook"})
     public void addBook(String title, String authorName) {
-        ms.printMessage(bookService.addBook(title, authorName) + " is created");
+        try {
+            ms.printMessage(bookService.addBook(title, authorName) + " is created");
+        } catch (LibraryServiceException e) {
+            ms.printMessage(e.getMessage());
+        }
     }
 
     @ShellMethod(value = "Update existing book", key = {"ub", "updateBook"})

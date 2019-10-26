@@ -5,7 +5,7 @@ import ru.otus.spring.library.domain.Book;
 import java.util.List;
 
 public interface BookDao {
-    Book insertBook(String title, String authorName);
+    Book insertBook(String title, String authorName) throws JdbcRepositoryException;
 
     int updateBook(long id, String title);
 

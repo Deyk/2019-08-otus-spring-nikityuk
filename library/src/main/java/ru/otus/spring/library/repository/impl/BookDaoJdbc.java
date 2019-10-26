@@ -32,16 +32,22 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book insertBook(String title, String authorName) {
+    public Book insertBook(String title, String authorName) throws JdbcRepositoryException {
         List<Author> uniqueAuthors = authorDao.getAllUniqueAuthors();
         Optional<Book> bookOptional = this.getAllBooks().stream()
                 .filter(book -> title.equalsIgnoreCase(book.getTitle()))
                 .findAny();
 
-        Author author = uniqueAuthors.stream()
+        Optional<Author> authorOptional = uniqueAuthors.stream()
                 .filter(ua -> authorName.equalsIgnoreCase(ua.getName()))
-                .findFirst()
-                .orElseGet(() -> authorDao.insertAuthor(authorName));
+                .findFirst();
+        Author author;
+
+        if (authorOptional.isPresent()) {
+            author = authorOptional.get();
+        } else {
+            author = authorDao.insertAuthor(authorName);
+        }
 
         if (bookOptional.isPresent()) {
             long bookId = bookOptional.get().getId();
@@ -55,6 +61,7 @@ public class BookDaoJdbc implements BookDao {
             authorDao.addBookIdToAuthor(author, bookId);
             return new Book(bookId, title, Collections.singletonList(author));
         }
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.otus.spring.library.repository.impl;
 
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -16,7 +17,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class AuthorDaoJdbc implements AuthorDao {
@@ -29,7 +29,10 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author insertAuthor(String name) {
+    public Author insertAuthor(String name) throws JdbcRepositoryException {
+        if (this.getAllUniqueAuthors().stream().anyMatch(author -> name.equalsIgnoreCase(author.getName()))) {
+            throw new JdbcRepositoryException("Author already exists");
+        }
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("name", name);
         long authorId = insertAuthor.executeAndReturnKey(params).longValue();
@@ -57,9 +60,12 @@ public class AuthorDaoJdbc implements AuthorDao {
     public Author getAuthorById(long id) throws JdbcRepositoryException {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);
-        return Optional.ofNullable(
-                operations.queryForObject("select * from author where id = :id", params, new AuthorMapper()))
-                .orElseThrow(() -> new JdbcRepositoryException("Returned author is null"));
+        try {
+            return operations.queryForObject("select * from author where id = :id", params, new AuthorMapper());
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new JdbcRepositoryException("Returned author is null");
+        }
+
     }
 
     @Override
