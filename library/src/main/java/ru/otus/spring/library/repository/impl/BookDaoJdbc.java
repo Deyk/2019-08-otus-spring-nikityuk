@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
+import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.BookDao;
 import ru.otus.spring.library.repository.JdbcRepositoryException;
 import ru.otus.spring.library.repository.ext.AllBooksResultSetExtractor;
@@ -22,28 +23,45 @@ import java.util.Optional;
 public class BookDaoJdbc implements BookDao {
     private final NamedParameterJdbcOperations operations;
     private final SimpleJdbcInsertOperations insertBook;
+    private final AuthorDao authorDao;
 
-    public BookDaoJdbc(NamedParameterJdbcOperations operations, DataSource dataSource) {
+    public BookDaoJdbc(NamedParameterJdbcOperations operations, DataSource dataSource, AuthorDao authorDao) {
         this.operations = operations;
         this.insertBook = new SimpleJdbcInsert(dataSource).withTableName("book").usingGeneratedKeyColumns("id");
+        this.authorDao = authorDao;
     }
 
     @Override
-    public Book insertBook(String title, long authorId) {
-        SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("title", title)
-                .addValue("author_id", authorId);
-        Number key = insertBook.executeAndReturnKey(params);
-        Author author = new Author(); //TODO
-        return new Book(key.longValue(), title, Collections.singletonList(author));
+    public Book insertBook(String title, String authorName) {
+        List<Author> uniqueAuthors = authorDao.getAllUniqueAuthors();
+        Optional<Book> bookOptional = this.getAllBooks().stream()
+                .filter(book -> title.equalsIgnoreCase(book.getTitle()))
+                .findAny();
+
+        Author author = uniqueAuthors.stream()
+                .filter(ua -> authorName.equalsIgnoreCase(ua.getName()))
+                .findFirst()
+                .orElseGet(() -> authorDao.insertAuthor(authorName));
+
+        if (bookOptional.isPresent()) {
+            long bookId = bookOptional.get().getId();
+            authorDao.addBookIdToAuthor(author, bookId);
+            List<Author> authors = authorDao.getAllAuthorsWithBookId(bookId);
+            return new Book(bookId, title, authors);
+        } else {
+            SqlParameterSource params = new MapSqlParameterSource()
+                    .addValue("title", title);
+            long bookId = insertBook.executeAndReturnKey(params).longValue();
+            authorDao.addBookIdToAuthor(author, bookId);
+            return new Book(bookId, title, Collections.singletonList(author));
+        }
     }
 
     @Override
-    public int updateBook(long id, String title, long authorId) {
+    public int updateBook(long id, String title) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id)
                 .addValue("title", title);
-        //TODO
         return operations.update("update book set title = :title where id = :id", params);
     }
 

@@ -17,20 +17,14 @@ public class BookShellService {
         this.ms = ms;
     }
 
-    @ShellMethod(value = "Add new book with existing author", key = {"ab", "addBook"})
-    public void addBook(String title, long authorId) {
-        Book book = bookService.addBook(title, authorId);
+    @ShellMethod(value = "Add new book with author", key = {"ab", "addBook"})
+    public void addBook(String title, String authorName) {
+        ms.printMessage(bookService.addBook(title, authorName) + " is created");
     }
 
     @ShellMethod(value = "Update existing book", key = {"ub", "updateBook"})
-    public void updateBook(long id, String title, long authorId) {
-        try {
-            ms.printMessage(bookService.updateBook(id, title, authorId) + " row is updated");
-        } catch (LibraryServiceException e) {
-            ms.printMessage(e.getMessage());
-        } catch (Exception ge) {
-            ms.printMessage(ge.getMessage() + " Check input parameters!");
-        }
+    public void updateBook(long id, String title) {
+        ms.printMessage(bookService.updateBook(id, title) + " row is updated");
     }
 
     @ShellMethod(value = "Get book by id", key = {"gb", "getBook"})
@@ -40,8 +34,6 @@ public class BookShellService {
             ms.printMessage("Returned Book: " + book);
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
-        } catch (Exception ge) {
-            ms.printMessage(ge.getMessage() + " Check input parameters!");
         }
     }
 

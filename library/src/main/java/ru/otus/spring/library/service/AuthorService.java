@@ -14,4 +14,6 @@ public interface AuthorService {
     int deleteAuthorById(long Id) throws LibraryServiceException;
 
     List<Author> getAllAuthors();
+
+    List<Author> getAllUniqueAuthors();
 }

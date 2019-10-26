@@ -2,7 +2,6 @@ package ru.otus.spring.library.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.LibraryServiceException;
 import ru.otus.spring.library.service.MessageService;
@@ -19,8 +18,7 @@ public class AuthorShellService {
 
     @ShellMethod(value = "Add new author", key = {"aa", "addAuthor"})
     public void addAuthor(String name) {
-        Author author = authorService.insertAuthor(name);
-        ms.printMessage(author + " is created");
+        ms.printMessage(authorService.insertAuthor(name) + " is created");
     }
 
     @ShellMethod(value = "Update existing author", key = {"ua", "updateAuthor"})
@@ -29,20 +27,15 @@ public class AuthorShellService {
             ms.printMessage(authorService.updateAuthor(id, name) + " row is updated");
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
-        } catch (Exception ge) {
-            ms.printMessage(ge.getMessage() + " Check input parameters!");
         }
     }
 
     @ShellMethod(value = "Get Author by id", key = {"ga", "getAuthor"})
     public void getAuthorById(long id) {
         try {
-            Author author = (authorService.getAuthorById(id));
-            ms.printMessage("Returned Author: " + author);
+            ms.printMessage("Returned Author: " + authorService.getAuthorById(id));
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
-        } catch (Exception ge) {
-            ms.printMessage(ge.getMessage() + " Check input parameters!");
         }
     }
 
@@ -52,13 +45,16 @@ public class AuthorShellService {
             ms.printMessage(authorService.deleteAuthorById(id) + " row is updated");
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
-        } catch (Exception ge) {
-            ms.printMessage(ge.getMessage() + " Check input parameters!");
         }
     }
 
     @ShellMethod(value = "Get all Authors", key = {"gaa", "getAllAuthors"})
     public void getAllAuthors() {
         ms.printMessage("All authors: " + authorService.getAllAuthors());
+    }
+
+    @ShellMethod(value = "Get all unique Authors", key = {"gaua", "getAllUniqueAuthors"})
+    public void getAllUniqueAuthors() {
+        ms.printMessage("All unique authors: " + authorService.getAllUniqueAuthors());
     }
 }
