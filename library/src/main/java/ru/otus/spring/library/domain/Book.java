@@ -15,5 +15,4 @@ public class Book {
     private long id;
     private String title;
     private List<Author> authors;
-//    private List<Genre> genres;
 }
