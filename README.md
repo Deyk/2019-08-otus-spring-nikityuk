@@ -5,10 +5,12 @@
 Contains homework for Spring Framework course by Otus.
 
 # Homework:
-1) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework01 
-2) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework02 
-3) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework03 
-4) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework04 
+1) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework01 - Введение в Spring Framework
+2) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework02 - Конфигурирование Spring-приложений
+3) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework03 - "Чёрная магия" Spring Boot
+4) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework04 - Продвинутая конфигурация Spring-приложений
+5) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework05 - DAO на Spring JDBC
+6) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework06 - JPQL, Spring ORM, DAO на основе Spring ORM + JPA
 
 Useful links:
 * Course page - https://otus.ru/learning/31566/#/
