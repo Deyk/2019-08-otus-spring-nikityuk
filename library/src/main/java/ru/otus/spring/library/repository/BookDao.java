@@ -3,15 +3,16 @@ package ru.otus.spring.library.repository;
 import ru.otus.spring.library.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
-    Book insertBook(String title, String authorName) throws JdbcRepositoryException;
+    Book updateBook(Book book);
 
-    int updateBook(long id, String title);
+    Book getBookById(long id) throws JpaRepositoryException;
 
-    Book getBookById(long id) throws JdbcRepositoryException;
+    Optional<Book> getBookByTitle(String title);
 
-    int deleteBookById(long id);
+    void deleteBookById(long id) throws JpaRepositoryException;
 
     List<Book> getAllBooks();
 }
