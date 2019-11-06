@@ -2,3 +2,7 @@ spring:
   datasource:
     url: jdbc:h2:mem:testdb
     initialization-mode: always
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true

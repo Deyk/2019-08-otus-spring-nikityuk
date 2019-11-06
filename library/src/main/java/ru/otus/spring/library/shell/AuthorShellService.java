@@ -25,11 +25,11 @@ public class AuthorShellService {
         }
     }
 
-    @ShellMethod(value = "Update existing author or create new one", key = {"ua", "updateAuthor"})
-    public void updateAuthor(String oldName, String name) {
+    @ShellMethod(value = "Update existing author", key = {"ua", "saveAuthor"})
+    public void updateAuthor(long id, String name) {
         try {
-            ms.printMessage(authorService.updateAuthor(oldName, name).toString());
-        } catch (Exception e) {
+            ms.printMessage(authorService.updateAuthor(id, name).toString());
+        } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
     }

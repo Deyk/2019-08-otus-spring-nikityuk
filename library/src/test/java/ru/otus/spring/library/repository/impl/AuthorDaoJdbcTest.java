@@ -45,8 +45,8 @@
 //
 //    @Test
 //    @DisplayName("Должен изменять поля автора")
-//    void updateAuthor() throws JdbcRepositoryException {
-//        int rowChanged = authorDaoJdbc.updateAuthor(new Author(EXISTING_AUTHOR_ID, NEW_AUTHOR_NAME));
+//    void saveAuthor() throws JdbcRepositoryException {
+//        int rowChanged = authorDaoJdbc.saveAuthor(new Author(EXISTING_AUTHOR_ID, NEW_AUTHOR_NAME));
 //        assertEquals(1, rowChanged);
 //        Author author = authorDaoJdbc.getAuthorById(EXISTING_AUTHOR_ID);
 //        assertThat(author).isNotNull()

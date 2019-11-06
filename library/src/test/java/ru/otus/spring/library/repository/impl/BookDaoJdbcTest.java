@@ -82,8 +82,8 @@
 //
 //    @Test
 //    @DisplayName("Должен изменять поля книги")
-//    void updateBook() throws JdbcRepositoryException {
-//        int rowChanged = bookDaoJdbc.updateBook(EXISTING_BOOK_ID, NEW_BOOK_TITLE);
+//    void saveBook() throws JdbcRepositoryException {
+//        int rowChanged = bookDaoJdbc.saveBook(EXISTING_BOOK_ID, NEW_BOOK_TITLE);
 //        assertEquals(1, rowChanged);
 //        Book book = bookDaoJdbc.getBookById(EXISTING_BOOK_ID);
 //        assertThat(book).isNotNull()

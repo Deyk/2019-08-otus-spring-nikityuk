@@ -24,17 +24,20 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author addAuthor(String name) {
         Optional<Author> authorOptional = authorDao.getAuthorByName(name);
-        return authorOptional.orElseGet(() -> authorDao.updateAuthor(new Author(0, name)));
+        return authorOptional.orElseGet(() -> authorDao.saveAuthor(new Author(0, name)));
     }
 
     @Override
-    public Author updateAuthor(String name) {
-        Optional<Author> authorOptional = authorDao.getAuthorByName(name);
-        if (authorOptional.isPresent()) {
-            return authorDao.updateAuthor(authorOptional.get());
-        } else {
-            return authorDao.updateAuthor(new Author(0, name));
+    public Author updateAuthor(long id, String name) throws LibraryServiceException {
+        Author author;
+        try {
+            author = authorDao.getAuthorById(id);
+        } catch (JpaRepositoryException e) {
+            ms.printMessage(e.getMessage());
+            throw new LibraryServiceException("Can't get author with id: " + id);
         }
+        author.setName(name);
+        return authorDao.saveAuthor(author);
     }
 
     @Override

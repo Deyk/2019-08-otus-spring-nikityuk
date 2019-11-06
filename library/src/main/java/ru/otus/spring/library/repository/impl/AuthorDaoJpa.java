@@ -7,20 +7,22 @@ import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
+@Transactional(value = Transactional.TxType.REQUIRES_NEW)
 public class AuthorDaoJpa implements AuthorDao {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public Author updateAuthor(Author author) {
+    public Author saveAuthor(Author author) {
         if (author.getId() <= 0) {
             em.persist(author);
             return author;
@@ -39,7 +41,11 @@ public class AuthorDaoJpa implements AuthorDao {
     public Optional<Author> getAuthorByName(String name) {
         val query = em.createQuery("select a from Author a where a.name = :name", Author.class);
         query.setParameter("name", name);
-        return Optional.ofNullable(query.getSingleResult());
+        try {
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
