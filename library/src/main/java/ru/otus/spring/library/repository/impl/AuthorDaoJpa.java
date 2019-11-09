@@ -57,11 +57,4 @@ public class AuthorDaoJpa implements AuthorDao {
     public List<Author> getAllAuthors() {
         return em.createQuery("select a from Author a", Author.class).getResultList();
     }
-
-    @Override
-    public List<Author> getAllAuthorsWithBookId(long bookId) {
-        val query = em.createQuery("select a from Author a where a.book_id = :bookId", Author.class);
-        query.setParameter("bookId", bookId);
-        return query.getResultList();
-    }
 }

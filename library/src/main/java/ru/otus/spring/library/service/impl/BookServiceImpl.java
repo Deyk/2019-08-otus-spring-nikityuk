@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(String title, String authorName) {
-        return bookDao.saveBook(new Book(0, title, Collections.singletonList(new Author(0, authorName))));
+        return bookDao.saveBook(new Book(0, title, Collections.singletonList(new Author(0L, authorName))));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
         }
         List<Author> authors = book.getAuthors();
         if (authors.stream().noneMatch(author -> authorName.equalsIgnoreCase(author.getName()))) {
-            authors.add(new Author(0, authorName));
+            authors.add(new Author(0L, authorName));
             book.setAuthors(authors);
         }
         book.setTitle(title);

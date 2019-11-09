@@ -24,7 +24,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author addAuthor(String name) {
         Optional<Author> authorOptional = authorDao.getAuthorByName(name);
-        return authorOptional.orElseGet(() -> authorDao.saveAuthor(new Author(0, name)));
+        return authorOptional.orElseGet(() -> authorDao.saveAuthor(new Author(0L, name)));
     }
 
     @Override

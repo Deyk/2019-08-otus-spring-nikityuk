@@ -16,6 +16,4 @@ public interface AuthorDao {
     void deleteAuthorById(long Id) throws JpaRepositoryException;
 
     List<Author> getAllAuthors();
-
-    List<Author> getAllAuthorsWithBookId(long bookId);
 }
