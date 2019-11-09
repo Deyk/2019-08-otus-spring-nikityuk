@@ -16,7 +16,7 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Тесты jdbc репозитория для работы с книгами")
+@DisplayName("Тесты jpa репозитория для работы с книгами")
 @DataJpaTest
 @Import({BookDaoJpa.class, AuthorDaoJpa.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)

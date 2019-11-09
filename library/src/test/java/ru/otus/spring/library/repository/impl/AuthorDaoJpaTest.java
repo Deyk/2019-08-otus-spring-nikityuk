@@ -13,7 +13,7 @@ import ru.otus.spring.library.repository.JpaRepositoryException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Тесты jdbc репозитория для работы с авторами")
+@DisplayName("Тесты jpa репозитория для работы с авторами")
 @DataJpaTest
 @Import(AuthorDaoJpa.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
