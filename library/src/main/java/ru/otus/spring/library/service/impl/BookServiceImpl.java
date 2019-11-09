@@ -3,37 +3,28 @@ package ru.otus.spring.library.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
-import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.BookDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
-import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.BookService;
 import ru.otus.spring.library.service.LibraryServiceException;
 import ru.otus.spring.library.service.MessageService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
-    private final AuthorService authorService;
-    private final AuthorDao authorDao;
     private final MessageService ms;
 
-    public BookServiceImpl(BookDao bookDao, AuthorService authorService, AuthorDao authorDao, MessageService ms) {
+    public BookServiceImpl(BookDao bookDao, MessageService ms) {
         this.bookDao = bookDao;
-        this.authorService = authorService;
-        this.authorDao = authorDao;
         this.ms = ms;
     }
 
     @Override
     public Book addBook(String title, String authorName) {
-        //TODO не работет добавлнение существующего автора
-        Optional<Author> authorOptional = authorDao.getAuthorByName(authorName);
-        return bookDao.saveBook(new Book(0, title, Collections.singletonList(authorOptional.orElseGet(() -> new Author(0, authorName)))));
+        return bookDao.saveBook(new Book(0, title, Collections.singletonList(new Author(0, authorName))));
     }
 
     @Override
@@ -47,7 +38,7 @@ public class BookServiceImpl implements BookService {
         }
         List<Author> authors = book.getAuthors();
         if (authors.stream().noneMatch(author -> authorName.equalsIgnoreCase(author.getName()))) {
-            authors.add(authorService.addAuthor(authorName));
+            authors.add(new Author(0, authorName));
             book.setAuthors(authors);
         }
         book.setTitle(title);

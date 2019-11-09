@@ -5,5 +5,8 @@ values ('title_01'),
 
 insert into author (name, book_id)
 values ('author_01', 1),
+       ('author_02', 1),
        ('author_02', 2),
+       ('author_03', 1),
+       ('author_03', 2),
        ('author_03', 3);

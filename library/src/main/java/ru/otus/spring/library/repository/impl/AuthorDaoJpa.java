@@ -7,7 +7,6 @@ import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -41,10 +40,11 @@ public class AuthorDaoJpa implements AuthorDao {
     public Optional<Author> getAuthorByName(String name) {
         val query = em.createQuery("select a from Author a where a.name = :name", Author.class);
         query.setParameter("name", name);
-        try {
-            return Optional.ofNullable(query.getSingleResult());
-        } catch (NoResultException e) {
+        List<Author> authors = query.getResultList();
+        if (authors.size() == 0) {
             return Optional.empty();
+        } else {
+            return Optional.ofNullable(authors.get(0));
         }
     }
 
