@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 @Import(AuthorDaoJpa.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class AuthorDaoJdbcTest {
+class AuthorDaoJpaTest {
     private static final String NEW_AUTHOR_NAME = "new author";
     private static final long NEW_AUTHOR_ID = 4L;
     private static final long EXISTING_AUTHOR_ID = 1L;
