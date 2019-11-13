@@ -50,7 +50,11 @@ public class AuthorDaoJpa implements AuthorDao {
 
     @Override
     public void deleteAuthorById(long id) throws JpaRepositoryException {
-        em.remove(this.getAuthorById(id));
+        Author author = this.getAuthorById(id);
+        val query = em.createNativeQuery("delete from books_authors where author_id = :authorId");
+        query.setParameter("authorId", id);
+        query.executeUpdate();
+        em.remove(author);
     }
 
     @Override

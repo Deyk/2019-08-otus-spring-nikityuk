@@ -12,4 +12,6 @@ public interface BookDao {
     void deleteBookById(long id) throws JpaRepositoryException;
 
     List<Book> getAllBooks();
+
+    List<Book> getAllBooksWhereAuthorId(long authorId);
 }

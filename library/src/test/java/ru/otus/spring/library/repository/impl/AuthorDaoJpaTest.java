@@ -22,6 +22,7 @@ class AuthorDaoJpaTest {
     private static final long NEW_AUTHOR_ID = 4L;
     private static final long EXISTING_AUTHOR_ID = 1L;
     private static final long EXISTING_AUTHOR_ID_2 = 2L;
+    private static final long EXISTING_AUTHOR_ID_3 = 3L;
     private static final long DEFAULT_ID = 0L;
 
     @Autowired
@@ -67,9 +68,16 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Должен удалять все записи автора")
-    void deleteAuthorById() throws JpaRepositoryException {
+    void deleteAuthorWithBookById() throws JpaRepositoryException {
         authorDaoJpa.deleteAuthorById(EXISTING_AUTHOR_ID_2);
         assertThatThrownBy(() -> authorDaoJpa.getAuthorById(EXISTING_AUTHOR_ID_2)).isInstanceOf(JpaRepositoryException.class);
+    }
+
+    @Test
+    @DisplayName("Должен удалять все записи автора без книг")
+    void deleteAuthorById() throws JpaRepositoryException {
+        authorDaoJpa.deleteAuthorById(EXISTING_AUTHOR_ID_3);
+        assertThatThrownBy(() -> authorDaoJpa.getAuthorById(EXISTING_AUTHOR_ID_3)).isInstanceOf(JpaRepositoryException.class);
     }
 
     @Test

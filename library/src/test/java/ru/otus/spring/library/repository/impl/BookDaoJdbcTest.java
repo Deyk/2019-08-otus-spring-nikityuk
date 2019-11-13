@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Тесты jpa репозитория для работы с книгами")
 @DataJpaTest
-@Import({BookDaoJpa.class, AuthorDaoJpa.class})
+@Import({BookDaoJpa.class, AuthorDaoJpa.class, CommentDaoJpa.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookDaoJdbcTest {
     private static final String NEW_AUTHOR_NAME = "new author";
@@ -27,14 +27,17 @@ class BookDaoJdbcTest {
     private static final long NEW_BOOK_ID = 3L;
     private static final long EXISTING_AUTHOR_ID = 1L;
     private static final long EXISTING_BOOK_ID = 1L;
-    private static final String SECOND_AUTHOR_NAME = "author_02";
-    private static final long SECOND_AUTHOR_ID = 3L;
+    private static final long EXISTING_COMMENT_ID = 1L;
+    private static final String THIRD_AUTHOR_NAME = "author_03";
+    private static final long THIRD_AUTHOR_ID = 3L;
     private static final long DEFAULT_ID = 0L;
 
     @Autowired
     BookDaoJpa bookDaoJpa;
     @Autowired
     AuthorDaoJpa authorDaoJpa;
+    @Autowired
+    CommentDaoJpa commentDaoJpa;
     @Autowired
     private TestEntityManager tem;
 
@@ -81,7 +84,8 @@ class BookDaoJdbcTest {
     void deleteBookById() throws JpaRepositoryException {
         bookDaoJpa.deleteBookById(EXISTING_BOOK_ID);
         assertThatThrownBy(() -> bookDaoJpa.getBookById(EXISTING_BOOK_ID)).isInstanceOf(JpaRepositoryException.class);
-        assertThat(authorDaoJpa.getAllAuthors()).isNotEmpty().hasSize(1).containsOnlyOnce(new Author(SECOND_AUTHOR_ID, SECOND_AUTHOR_NAME));
+        assertThat(authorDaoJpa.getAllAuthors()).isNotEmpty().hasSize(1).containsOnlyOnce(new Author(THIRD_AUTHOR_ID, THIRD_AUTHOR_NAME));
+        assertThatThrownBy(() -> commentDaoJpa.getCommentById(EXISTING_COMMENT_ID)).isInstanceOf(JpaRepositoryException.class);
     }
 
     @Test
