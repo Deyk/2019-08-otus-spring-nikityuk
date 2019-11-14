@@ -28,7 +28,13 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author addAuthor(String name) {
         Optional<Author> authorOptional = authorDao.getAuthorByName(name);
-        return authorOptional.orElseGet(() -> authorDao.saveAuthor(new Author(0L, name)));
+        if (authorOptional.isPresent()) {
+            return authorOptional.get();
+        } else {
+            Author author = new Author(0L, name);
+            authorDao.saveAuthor(author);
+            return author;
+        }
     }
 
     @Override
@@ -41,7 +47,8 @@ public class AuthorServiceImpl implements AuthorService {
             throw new LibraryServiceException("Can't get author with id: " + id);
         }
         author.setName(name);
-        return authorDao.saveAuthor(author);
+        authorDao.saveAuthor(author);
+        return author;
     }
 
     @Override

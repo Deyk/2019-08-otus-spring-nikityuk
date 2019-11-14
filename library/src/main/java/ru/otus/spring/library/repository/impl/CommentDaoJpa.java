@@ -2,6 +2,9 @@ package ru.otus.spring.library.repository.impl;
 
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.library.domain.Comment;
 import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
@@ -9,24 +12,23 @@ import ru.otus.spring.library.repository.JpaRepositoryException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional(Transactional.TxType.REQUIRES_NEW)
+@Transactional(readOnly = true)
 public class CommentDaoJpa implements CommentDao {
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public Comment saveComment(Comment comment) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void saveComment(Comment comment) {
         if (comment.getId() <= 0) {
             em.persist(comment);
-            return comment;
         } else {
-            return em.merge(comment);
+            em.merge(comment);
         }
     }
 
@@ -44,6 +46,7 @@ public class CommentDaoJpa implements CommentDao {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public void deleteCommentById(long commentId) throws JpaRepositoryException {
         em.remove(this.getCommentById(commentId));
     }

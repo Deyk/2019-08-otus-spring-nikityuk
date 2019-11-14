@@ -2,6 +2,9 @@ package ru.otus.spring.library.repository.impl;
 
 import lombok.val;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
@@ -12,14 +15,13 @@ import ru.otus.spring.library.repository.JpaRepositoryException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional(value = Transactional.TxType.REQUIRES_NEW)
+@Transactional(readOnly = true)
 public class BookDaoJpa implements BookDao {
     private final AuthorDao authorDao;
     private final CommentDao commentDao;
@@ -33,12 +35,12 @@ public class BookDaoJpa implements BookDao {
     }
 
     @Override
-    public Book saveBook(Book book) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void saveBook(Book book) {
         if (book.getId() <= 0) {
             em.persist(book);
-            return book;
         } else {
-            return em.merge(book);
+            em.merge(book);
         }
     }
 
@@ -49,6 +51,7 @@ public class BookDaoJpa implements BookDao {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public void deleteBookById(long id) throws JpaRepositoryException {
         Book book = this.getBookById(id);
         for (Author author : book.getAuthors()) {

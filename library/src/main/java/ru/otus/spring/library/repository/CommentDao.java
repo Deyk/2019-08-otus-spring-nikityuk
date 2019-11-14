@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CommentDao {
 
-    Comment saveComment(Comment comment);
+    void saveComment(Comment comment);
 
     Comment getCommentById(long commentId) throws JpaRepositoryException;
 

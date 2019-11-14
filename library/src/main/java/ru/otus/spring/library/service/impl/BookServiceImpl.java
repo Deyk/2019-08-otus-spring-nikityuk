@@ -24,7 +24,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(String title, String authorName) {
-        return bookDao.saveBook(new Book(0L, title, Collections.singletonList(new Author(0L, authorName))));
+        Book book = new Book(0L, title, Collections.singletonList(new Author(0L, authorName)));
+        bookDao.saveBook(book);
+        return book;
     }
 
     @Override
@@ -42,7 +44,8 @@ public class BookServiceImpl implements BookService {
             book.setAuthors(authors);
         }
         book.setTitle(title);
-        return bookDao.saveBook(book);
+        bookDao.saveBook(book);
+        return book;
     }
 
     @Override

@@ -33,7 +33,8 @@ class AuthorDaoJpaTest {
     @Test
     @DisplayName("Должен добавлять автора")
     void insertAuthor() {
-        Author author = authorDaoJpa.saveAuthor(new Author(DEFAULT_ID, NEW_AUTHOR_NAME));
+        Author author = new Author(DEFAULT_ID, NEW_AUTHOR_NAME);
+        authorDaoJpa.saveAuthor(author);
         Author expectedAuthor = tem.find(Author.class, NEW_AUTHOR_ID);
         assertThat(author).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }
@@ -41,7 +42,8 @@ class AuthorDaoJpaTest {
     @Test
     @DisplayName("Должен изменять поля автора")
     void saveAuthor() {
-        Author author = authorDaoJpa.saveAuthor(new Author(EXISTING_AUTHOR_ID, NEW_AUTHOR_NAME));
+        Author author = new Author(EXISTING_AUTHOR_ID, NEW_AUTHOR_NAME);
+        authorDaoJpa.saveAuthor(author);
         Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
         assertThat(author).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }

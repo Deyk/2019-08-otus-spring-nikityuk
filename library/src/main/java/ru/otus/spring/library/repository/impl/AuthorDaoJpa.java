@@ -2,31 +2,33 @@ package ru.otus.spring.library.repository.impl;
 
 import lombok.val;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional(value = Transactional.TxType.REQUIRES_NEW)
+@Transactional(readOnly = true)
 public class AuthorDaoJpa implements AuthorDao {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public Author saveAuthor(Author author) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void saveAuthor(Author author) {
         if (author.getId() <= 0) {
             em.persist(author);
-            return author;
         } else {
-            return em.merge(author);
+            em.merge(author);
         }
     }
 
@@ -49,6 +51,7 @@ public class AuthorDaoJpa implements AuthorDao {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public void deleteAuthorById(long id) throws JpaRepositoryException {
         Author author = this.getAuthorById(id);
         val query = em.createNativeQuery("delete from books_authors where author_id = :authorId");

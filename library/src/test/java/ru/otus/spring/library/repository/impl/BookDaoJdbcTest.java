@@ -44,7 +44,8 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Должен добавлять книгу и автора, если его еще нет")
     void insertBookAndAuthor() {
-        Book book = bookDaoJpa.saveBook(new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(DEFAULT_ID, NEW_AUTHOR_NAME))));
+        Book book = new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(DEFAULT_ID, NEW_AUTHOR_NAME)));
+        bookDaoJpa.saveBook(book);
         Book expectedBook = tem.find(Book.class, NEW_BOOK_ID);
         assertThat(book).isEqualToComparingFieldByFieldRecursively(expectedBook);
     }
@@ -52,7 +53,8 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Должен добавлять книгу и связывать с автором, если он есть")
     void insertBookWhenAuthorExists() {
-        Book book = bookDaoJpa.saveBook(new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(DEFAULT_ID, EXISTING_AUTHOR_NAME))));
+        Book book = new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(DEFAULT_ID, EXISTING_AUTHOR_NAME)));
+        bookDaoJpa.saveBook(book);
         Book expectedBook = tem.find(Book.class, NEW_BOOK_ID);
         assertThat(book).isEqualToComparingFieldByFieldRecursively(expectedBook);
     }
@@ -60,7 +62,8 @@ class BookDaoJdbcTest {
     @Test
     @DisplayName("Должен изменять поля книги")
     void saveBook() {
-        Book book = bookDaoJpa.saveBook(new Book(EXISTING_BOOK_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME))));
+        Book book = new Book(EXISTING_BOOK_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(EXISTING_AUTHOR_ID, EXISTING_AUTHOR_NAME)));
+        bookDaoJpa.saveBook(book);
         Book expectedBook = tem.find(Book.class, EXISTING_BOOK_ID);
         assertThat(book).isEqualToComparingFieldByFieldRecursively(expectedBook);
     }

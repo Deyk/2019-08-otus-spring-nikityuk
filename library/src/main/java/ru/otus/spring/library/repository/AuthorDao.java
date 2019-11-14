@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuthorDao {
 
-    Author saveAuthor(Author author);
+    void saveAuthor(Author author);
 
     Author getAuthorById(long id) throws JpaRepositoryException;
 

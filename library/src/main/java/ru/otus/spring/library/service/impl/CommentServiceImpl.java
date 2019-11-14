@@ -28,7 +28,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment addComment(String text, long bookId) throws LibraryServiceException {
         try {
-            return commentDao.saveComment(new Comment(0L, text, new Date(), bookDao.getBookById(bookId)));
+            Comment comment = new Comment(0L, text, new Date(), bookDao.getBookById(bookId));
+            commentDao.saveComment(comment);
+            return comment;
         } catch (JpaRepositoryException e) {
             ms.printMessage(e.getMessage());
             throw new LibraryServiceException("Can't add comment to book with id: " + bookId);
@@ -56,7 +58,8 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setText(text);
         comment.setBook(book);
-        return commentDao.saveComment(comment);
+        commentDao.saveComment(comment);
+        return comment;
     }
 
     @Override
