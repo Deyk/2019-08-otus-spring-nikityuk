@@ -2,60 +2,74 @@ package ru.otus.spring.library.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.otus.spring.library.domain.Author;
+import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.repository.AuthorDao;
-import ru.otus.spring.library.repository.JdbcRepositoryException;
+import ru.otus.spring.library.repository.BookDao;
+import ru.otus.spring.library.repository.JpaRepositoryException;
 import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.LibraryServiceException;
 import ru.otus.spring.library.service.MessageService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorDao authorDao;
+    private final BookDao bookDao;
     private final MessageService ms;
 
-    public AuthorServiceImpl(AuthorDao authorDao, MessageService ms) {
+    public AuthorServiceImpl(AuthorDao authorDao, BookDao bookDao, MessageService ms) {
         this.authorDao = authorDao;
+        this.bookDao = bookDao;
         this.ms = ms;
     }
 
     @Override
-    public Author insertAuthor(String name) throws LibraryServiceException {
-        try {
-            return authorDao.insertAuthor(name);
-        } catch (JdbcRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't add author: " + name);
+    public Author addAuthor(String name) {
+        Optional<Author> authorOptional = authorDao.getAuthorByName(name);
+        if (authorOptional.isPresent()) {
+            return authorOptional.get();
+        } else {
+            Author author = new Author(0L, name);
+            authorDao.saveAuthor(author);
+            return author;
         }
     }
 
     @Override
-    public int updateAuthor(long id, String name) throws LibraryServiceException {
-        Author author = new Author(id, name);
+    public Author updateAuthor(long id, String name) throws LibraryServiceException {
+        Author author;
         try {
-            return authorDao.updateAuthor(author);
-        } catch (JdbcRepositoryException e) {
+            author = authorDao.getAuthorById(id);
+        } catch (JpaRepositoryException e) {
             ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't update author: " + author);
+            throw new LibraryServiceException("Can't get author with id: " + id);
         }
+        author.setName(name);
+        authorDao.saveAuthor(author);
+        return author;
     }
 
     @Override
     public Author getAuthorById(long id) throws LibraryServiceException {
         try {
             return authorDao.getAuthorById(id);
-        } catch (JdbcRepositoryException e) {
+        } catch (JpaRepositoryException e) {
             ms.printMessage(e.getMessage());
             throw new LibraryServiceException("Can't get author with id: " + id);
         }
     }
 
     @Override
-    public int deleteAuthorById(long id) throws LibraryServiceException {
+    public void deleteAuthorById(long id) throws LibraryServiceException {
+        List<Book> allBooksWhereAuthorId = bookDao.getAllBooksWhereAuthorId(id);
+        if (allBooksWhereAuthorId.size() > 0) {
+            throw new LibraryServiceException("Can't delete author with id: " + id + ". Author still has books!");
+        }
         try {
-            return authorDao.deleteAuthorById(id);
-        } catch (JdbcRepositoryException e) {
+            authorDao.deleteAuthorById(id);
+        } catch (JpaRepositoryException e) {
             ms.printMessage(e.getMessage());
             throw new LibraryServiceException("Can't delete author with id: " + id);
         }
@@ -64,10 +78,5 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> getAllAuthors() {
         return authorDao.getAllAuthors();
-    }
-
-    @Override
-    public List<Author> getAllUniqueAuthors() {
-        return authorDao.getAllUniqueAuthors();
     }
 }

@@ -2,7 +2,6 @@ package ru.otus.spring.library.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.service.BookService;
 import ru.otus.spring.library.service.LibraryServiceException;
 import ru.otus.spring.library.service.MessageService;
@@ -17,25 +16,24 @@ public class BookShellService {
         this.ms = ms;
     }
 
-    @ShellMethod(value = "Add new book with author", key = {"ab", "addBook"})
+    @ShellMethod(value = "Add new book", key = {"ab", "addBook"})
     public void addBook(String title, String authorName) {
+        ms.printMessage(bookService.addBook(title, authorName).toString());
+    }
+
+    @ShellMethod(value = "Update existing book", key = {"ub", "saveBook"})
+    public void updateBook(long id, String title, String authorName) {
         try {
-            ms.printMessage(bookService.addBook(title, authorName) + " is created");
+            ms.printMessage(bookService.updateBook(id, title, authorName).toString());
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
     }
 
-    @ShellMethod(value = "Update existing book", key = {"ub", "updateBook"})
-    public void updateBook(long id, String title) {
-        ms.printMessage(bookService.updateBook(id, title) + " row is updated");
-    }
-
     @ShellMethod(value = "Get book by id", key = {"gb", "getBook"})
     public void getBookById(long id) {
         try {
-            Book book = (bookService.getBookById(id));
-            ms.printMessage("Returned Book: " + book);
+            ms.printMessage("Returned Book: " + bookService.getBookById(id));
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
@@ -43,7 +41,12 @@ public class BookShellService {
 
     @ShellMethod(value = "Delete book by id", key = {"db", "deleteBook"})
     public void deleteBookById(long id) {
-        ms.printMessage(bookService.deleteBookById(id) + " row is updated");
+        try {
+            bookService.deleteBookById(id);
+            ms.printMessage("Book " + id + " is deleted");
+        } catch (LibraryServiceException e) {
+            ms.printMessage(e.getMessage());
+        }
     }
 
     @ShellMethod(value = "Get all books", key = {"gab", "getAllBooks"})

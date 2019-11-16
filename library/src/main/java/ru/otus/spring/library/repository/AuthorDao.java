@@ -2,23 +2,18 @@ package ru.otus.spring.library.repository;
 
 import ru.otus.spring.library.domain.Author;
 
-import java.util.BitSet;
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorDao {
-    Author insertAuthor(String name) throws JdbcRepositoryException;
 
-    int updateAuthor(Author author) throws JdbcRepositoryException;
+    void saveAuthor(Author author);
 
-    int addBookIdToAuthor(Author author, long bookId);
+    Author getAuthorById(long id) throws JpaRepositoryException;
 
-    Author getAuthorById(long id) throws JdbcRepositoryException;
+    Optional<Author> getAuthorByName(String name);
 
-    int deleteAuthorById(long Id) throws JdbcRepositoryException;
+    void deleteAuthorById(long Id) throws JpaRepositoryException;
 
     List<Author> getAllAuthors();
-
-    List<Author> getAllUniqueAuthors();
-
-    List<Author> getAllAuthorsWithBookId(long bookId);
 }

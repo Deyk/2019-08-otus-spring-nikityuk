@@ -19,16 +19,16 @@ public class AuthorShellService {
     @ShellMethod(value = "Add new author", key = {"aa", "addAuthor"})
     public void addAuthor(String name) {
         try {
-            ms.printMessage(authorService.insertAuthor(name) + " is created");
-        } catch (LibraryServiceException e) {
+            ms.printMessage(authorService.addAuthor(name).toString());
+        } catch (Exception e) {
             ms.printMessage(e.getMessage());
         }
     }
 
-    @ShellMethod(value = "Update existing author", key = {"ua", "updateAuthor"})
+    @ShellMethod(value = "Update existing author", key = {"ua", "saveAuthor"})
     public void updateAuthor(long id, String name) {
         try {
-            ms.printMessage(authorService.updateAuthor(id, name) + " row is updated");
+            ms.printMessage(authorService.updateAuthor(id, name).toString());
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
@@ -46,7 +46,8 @@ public class AuthorShellService {
     @ShellMethod(value = "Delete Author by id", key = {"da", "deleteAuthor"})
     public void deleteAuthorById(long id) {
         try {
-            ms.printMessage(authorService.deleteAuthorById(id) + " row is updated");
+            authorService.deleteAuthorById(id);
+            ms.printMessage("Author " + id + " is deleted");
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
@@ -55,10 +56,5 @@ public class AuthorShellService {
     @ShellMethod(value = "Get all Authors", key = {"gaa", "getAllAuthors"})
     public void getAllAuthors() {
         ms.printMessage("All authors: " + authorService.getAllAuthors());
-    }
-
-    @ShellMethod(value = "Get all unique Authors", key = {"gaua", "getAllUniqueAuthors"})
-    public void getAllUniqueAuthors() {
-        ms.printMessage("All unique authors: " + authorService.getAllUniqueAuthors());
     }
 }
