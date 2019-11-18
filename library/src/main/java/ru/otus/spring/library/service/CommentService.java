@@ -13,7 +13,7 @@ public interface CommentService {
 
     Comment getCommentByIdWithBook(long commentId) throws LibraryServiceException;
 
-    void deleteCommentById(long commentId) throws LibraryServiceException;
+    void deleteCommentById(long commentId);
 
     List<Comment> getAllCommentsForBook(long bookId);
 }

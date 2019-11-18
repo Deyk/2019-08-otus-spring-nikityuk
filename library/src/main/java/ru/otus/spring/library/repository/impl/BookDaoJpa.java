@@ -59,7 +59,7 @@ public class BookDaoJpa implements BookDao {
         }
         List<Comment> comments = commentDao.getAllCommentsForBook(id);
         for (Comment comment : comments) {
-            commentDao.deleteCommentById(comment.getId());
+            commentDao.deleteById(comment.getId());
         }
         em.remove(book);
     }
