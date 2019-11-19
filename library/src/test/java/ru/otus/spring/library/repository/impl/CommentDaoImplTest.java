@@ -5,17 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
 import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName(value = "Тесты jpa репозитория для работы с комментариями")
+@DisplayName("Тесты репозитория для работы с комментариями")
 @DataJpaTest
 class CommentDaoImplTest {
     private static final long EXISTING_COMMENT_ID = 1L;
@@ -58,5 +60,19 @@ class CommentDaoImplTest {
         assertEquals(book.getTitle(), expectedBook.getTitle());
 
         assertThat(book.getAuthors()).hasSize(2).contains(expectedBook.getAuthors().get(0), expectedBook.getAuthors().get(1));
+    }
+
+    @Test
+    @DisplayName("Должен получать все комментарии для книги по ее id")
+    void getAllWhereBookId() {
+        List<Comment> comments = commentDao.getAllWhereBookId(EXISTING_BOOK_ID);
+        assertEquals(comments.size(), 2);
+    }
+
+    @Test
+    @DisplayName("Должен удалять все комментарии для книги по ее id")
+    void deleteAllWhereBookId() {
+        commentDao.deleteAllWhereBookId(EXISTING_BOOK_ID);
+        assertThat(commentDao.findAll()).isEmpty();
     }
 }

@@ -41,12 +41,8 @@ public class BookShellService {
 
     @ShellMethod(value = "Delete book by id", key = {"db", "deleteBook"})
     public void deleteBookById(long id) {
-        try {
-            bookService.deleteBookById(id);
-            ms.printMessage("Book " + id + " is deleted");
-        } catch (LibraryServiceException e) {
-            ms.printMessage(e.getMessage());
-        }
+        bookService.deleteBookById(id);
+        ms.printMessage("Book " + id + " is deleted");
     }
 
     @ShellMethod(value = "Get all books", key = {"gab", "getAllBooks"})

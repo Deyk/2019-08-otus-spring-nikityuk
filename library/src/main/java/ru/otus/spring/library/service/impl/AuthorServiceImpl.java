@@ -48,7 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthorById(long id) throws LibraryServiceException {
-        List<Book> allBooksWhereAuthorId = bookDao.getAllBooksWhereAuthorId(id);
+        List<Book> allBooksWhereAuthorId = bookDao.getAllWhereAuthorId(id);
         if (allBooksWhereAuthorId.size() > 0) {
             throw new LibraryServiceException("Can't delete author with id: " + id + ". Author still has books!");
         }

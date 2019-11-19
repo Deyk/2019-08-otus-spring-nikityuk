@@ -9,8 +9,6 @@ import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.repository.CommentDaoCustom;
 import ru.otus.spring.library.repository.JpaRepositoryException;
 
-import java.util.Optional;
-
 @Repository
 @Transactional(readOnly = true)
 public class CommentDaoImpl implements CommentDaoCustom {
@@ -19,13 +17,8 @@ public class CommentDaoImpl implements CommentDaoCustom {
 
     @Override
     public Comment getCommentByIdWithBook(long commentId) throws JpaRepositoryException {
-        Optional<Comment> commentOptional = commentDao.findById(commentId);
-        if (commentOptional.isPresent()) {
-            Comment comment = commentOptional.get();
-            Hibernate.initialize(comment.getBook());
-            return comment;
-        } else {
-            throw new JpaRepositoryException("Returned comment is null");
-        }
+        Comment comment = commentDao.findById(commentId).orElseThrow(() -> new JpaRepositoryException("Returned comment is null"));
+        Hibernate.initialize(comment.getBook());
+        return comment;
     }
 }

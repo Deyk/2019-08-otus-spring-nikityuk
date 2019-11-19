@@ -27,35 +27,22 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment addComment(String text, long bookId) throws LibraryServiceException {
-        try {
-            Comment comment = new Comment(0L, text, new Date(), bookDao.getBookById(bookId));
-            commentDao.saveAndFlush(comment);
-            return comment;
-        } catch (JpaRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't add comment to book with id: " + bookId);
-        }
+        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't add comment to book with id: " + bookId));
+        Comment comment = new Comment(0L, text, new Date(), book);
+        commentDao.saveAndFlush(comment);
+        return comment;
     }
 
     @Override
     public Comment updateComment(long commentId, String text, long bookId) throws LibraryServiceException {
         Comment comment;
-        Book book;
-
         try {
             comment = commentDao.getCommentByIdWithBook(commentId);
         } catch (JpaRepositoryException e) {
             ms.printMessage(e.getMessage());
             throw new LibraryServiceException("Can't get comment with id: " + commentId);
         }
-
-        try {
-            book = bookDao.getBookById(bookId);
-        } catch (JpaRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't get book with id: " + bookId);
-        }
-
+        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't add comment to book with id: " + bookId));
         comment.setText(text);
         comment.setBook(book);
         commentDao.saveAndFlush(comment);
@@ -84,6 +71,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getAllCommentsForBook(long bookId) {
-        return commentDao.getAllCommentsForBook(bookId);
+        return commentDao.getAllWhereBookId(bookId);
     }
 }
