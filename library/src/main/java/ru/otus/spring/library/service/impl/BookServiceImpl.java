@@ -7,7 +7,6 @@ import ru.otus.spring.library.repository.BookDao;
 import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.service.BookService;
 import ru.otus.spring.library.service.LibraryServiceException;
-import ru.otus.spring.library.service.MessageService;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,12 +15,10 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
     private final CommentDao commentDao;
-    private final MessageService ms;
 
-    public BookServiceImpl(BookDao bookDao, CommentDao commentDao, MessageService ms) {
+    public BookServiceImpl(BookDao bookDao, CommentDao commentDao) {
         this.bookDao = bookDao;
         this.commentDao = commentDao;
-        this.ms = ms;
     }
 
     @Override
