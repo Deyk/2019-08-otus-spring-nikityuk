@@ -55,7 +55,7 @@ public class BookDaoJpa implements BookDao {
     public void deleteBookById(long id) throws JpaRepositoryException {
         Book book = this.getBookById(id);
         for (Author author : book.getAuthors()) {
-            authorDao.deleteAuthorById(author.getId());
+            authorDao.deleteById(author.getId());
         }
         List<Comment> comments = commentDao.getAllCommentsForBook(id);
         for (Comment comment : comments) {

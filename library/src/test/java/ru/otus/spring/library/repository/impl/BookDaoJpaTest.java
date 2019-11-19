@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
+import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.repository.JpaRepositoryException;
 
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Тесты jpa репозитория для работы с книгами")
 @DataJpaTest
-@Import({BookDaoJpa.class, AuthorDaoJpa.class})
+@Import(BookDaoJpa.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookDaoJpaTest {
     private static final String NEW_AUTHOR_NAME = "new author";
@@ -36,7 +37,7 @@ class BookDaoJpaTest {
     @Autowired
     BookDaoJpa bookDaoJpa;
     @Autowired
-    AuthorDaoJpa authorDaoJpa;
+    AuthorDao authorDao;
     @Autowired
     CommentDao commentDao;
     @Autowired
@@ -88,7 +89,7 @@ class BookDaoJpaTest {
     void deleteBookById() throws JpaRepositoryException {
         bookDaoJpa.deleteBookById(EXISTING_BOOK_ID);
         assertThatThrownBy(() -> bookDaoJpa.getBookById(EXISTING_BOOK_ID)).isInstanceOf(JpaRepositoryException.class);
-        assertThat(authorDaoJpa.getAllAuthors()).isNotEmpty().hasSize(1).containsOnlyOnce(new Author(THIRD_AUTHOR_ID, THIRD_AUTHOR_NAME));
+        assertThat(authorDao.findAll()).isNotEmpty().hasSize(1).containsOnlyOnce(new Author(THIRD_AUTHOR_ID, THIRD_AUTHOR_NAME));
         assertThatThrownBy(() -> commentDao.findById(EXISTING_COMMENT_ID)).isInstanceOf(JpaRepositoryException.class);
     }
 
