@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(long id) {
         if (bookDao.existsById(id)) {
-            commentDao.deleteAllWhereBookId(id);
+            commentDao.deleteAllByBook_Id(id);
             bookDao.deleteById(id);
         }
     }

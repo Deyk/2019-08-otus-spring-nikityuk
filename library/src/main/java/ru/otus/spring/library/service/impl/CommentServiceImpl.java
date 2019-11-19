@@ -71,6 +71,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getAllCommentsForBook(long bookId) {
-        return commentDao.getAllWhereBookId(bookId);
+        return commentDao.getAllByBook_Id(bookId);
     }
 }

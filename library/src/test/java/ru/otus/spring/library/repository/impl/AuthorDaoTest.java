@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AuthorDaoTest {
     private static final String NEW_AUTHOR_NAME = "new author";
+    private static final String EXISTING_AUTHOR_NAME = "author_01";
     private static final long NEW_AUTHOR_ID = 4L;
     private static final long EXISTING_AUTHOR_ID = 1L;
     private static final long EXISTING_AUTHOR_ID_2 = 2L;
@@ -51,9 +52,19 @@ class AuthorDaoTest {
     }
 
     @Test
-    @DisplayName("Должен получать существующего автора")
+    @DisplayName("Должен получать существующего автора по id")
     void getAuthorById() {
         Optional<Author> author = authorDao.findById(EXISTING_AUTHOR_ID);
+        author.ifPresent(value -> {
+            Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
+            assertThat(value).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
+        });
+    }
+
+    @Test
+    @DisplayName("Должен получать существующего автора по имени")
+    void getAuthorByName() {
+        Optional<Author> author = authorDao.findByName(EXISTING_AUTHOR_NAME);
         author.ifPresent(value -> {
             Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
             assertThat(value).isEqualToComparingFieldByFieldRecursively(expectedAuthor);

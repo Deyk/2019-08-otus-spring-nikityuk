@@ -65,14 +65,14 @@ class CommentDaoImplTest {
     @Test
     @DisplayName("Должен получать все комментарии для книги по ее id")
     void getAllWhereBookId() {
-        List<Comment> comments = commentDao.getAllWhereBookId(EXISTING_BOOK_ID);
+        List<Comment> comments = commentDao.getAllByBook_Id(EXISTING_BOOK_ID);
         assertEquals(comments.size(), 2);
     }
 
     @Test
     @DisplayName("Должен удалять все комментарии для книги по ее id")
     void deleteAllWhereBookId() {
-        commentDao.deleteAllWhereBookId(EXISTING_BOOK_ID);
+        commentDao.deleteAllByBook_Id(EXISTING_BOOK_ID);
         assertThat(commentDao.findAll()).isEmpty();
     }
 }

@@ -9,7 +9,6 @@ import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.LibraryServiceException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -23,14 +22,11 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author addAuthor(String name) {
-        Optional<Author> authorOptional = authorDao.getAuthorByName(name);
-        if (authorOptional.isPresent()) {
-            return authorOptional.get();
-        } else {
+        return authorDao.findByName(name).orElseGet(() -> {
             Author author = new Author(0L, name);
             authorDao.saveAndFlush(author);
             return author;
-        }
+        });
     }
 
     @Override
