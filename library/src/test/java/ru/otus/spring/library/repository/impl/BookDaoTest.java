@@ -31,7 +31,6 @@ class BookDaoTest {
     private static final String NEW_BOOK_TITLE = "new book";
     private static final long NEW_BOOK_ID = 3L;
     private static final long EXISTING_AUTHOR_ID = 1L;
-    private static final long EXISTING_AUTHOR_2_ID = 2L;
     private static final long EXISTING_BOOK_ID = 1L;
     private static final long DEFAULT_ID = 0L;
 
