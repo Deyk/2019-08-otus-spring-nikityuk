@@ -9,7 +9,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
+import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.BookDao;
+import ru.otus.spring.library.repository.JpaRepositoryException;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Тесты репозитория для работы с книгами")
 @DataJpaTest
@@ -35,12 +38,16 @@ class BookDaoTest {
     @Autowired
     BookDao bookDao;
     @Autowired
+    AuthorDao authorDao;
+    @Autowired
     private TestEntityManager tem;
 
     @Test
     @DisplayName("Должен добавлять книгу и автора, если его еще нет")
     void insertBookAndAuthor() {
-        Book book = new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(DEFAULT_ID, NEW_AUTHOR_NAME)));
+        Author author = new Author(DEFAULT_ID, NEW_AUTHOR_NAME);
+        Book book = new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(author));
+        authorDao.saveAndFlush(author);
         bookDao.saveAndFlush(book);
         Book expectedBook = tem.find(Book.class, NEW_BOOK_ID);
         assertThat(book).isEqualToComparingFieldByFieldRecursively(expectedBook);
@@ -49,7 +56,9 @@ class BookDaoTest {
     @Test
     @DisplayName("Должен добавлять книгу и связывать с автором, если он есть")
     void insertBookWhenAuthorExists() {
-        Book book = new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(new Author(DEFAULT_ID, EXISTING_AUTHOR_NAME)));
+        Optional<Author> existentAuthor = authorDao.findByNameWithBook(EXISTING_AUTHOR_NAME);
+        assertTrue(existentAuthor.isPresent());
+        Book book = new Book(DEFAULT_ID, NEW_BOOK_TITLE, Collections.singletonList(existentAuthor.get()));
         bookDao.saveAndFlush(book);
         Book expectedBook = tem.find(Book.class, NEW_BOOK_ID);
         assertThat(book).isEqualToComparingFieldByFieldRecursively(expectedBook);
@@ -72,12 +81,6 @@ class BookDaoTest {
         book.ifPresent(value -> assertThat(value).isEqualToComparingFieldByFieldRecursively(expectedBook));
     }
 
-    @Test
-    @DisplayName("Должен получать все книги с конкретным id автора")
-    void getAllWhereAuthorId() {
-        List<Book> books = bookDao.getAllWhereAuthorId(EXISTING_AUTHOR_2_ID);
-        assertEquals(books.size(), 2);
-    }
 
     @Test
     @DisplayName("Должен возвращать Optional.empty при попытке достать несуществующую книгу")
@@ -86,10 +89,11 @@ class BookDaoTest {
     }
 
     @Test
-    @DisplayName("Должен удалять существующую книгу")
+    @DisplayName("Должен удалять существующую книгу, но не трогать авторов")
     void deleteBookById() {
         bookDao.deleteById(EXISTING_BOOK_ID);
         assertEquals(bookDao.findById(EXISTING_BOOK_ID), Optional.empty());
+        assertEquals(authorDao.findAll().size(), 3);
     }
 
     @Test

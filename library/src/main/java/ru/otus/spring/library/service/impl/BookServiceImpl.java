@@ -3,6 +3,7 @@ package ru.otus.spring.library.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
+import ru.otus.spring.library.repository.AuthorDao;
 import ru.otus.spring.library.repository.BookDao;
 import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.service.BookService;
@@ -14,16 +15,20 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
+    private final AuthorDao authorDao;
     private final CommentDao commentDao;
 
-    public BookServiceImpl(BookDao bookDao, CommentDao commentDao) {
+    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, CommentDao commentDao) {
         this.bookDao = bookDao;
+        this.authorDao = authorDao;
         this.commentDao = commentDao;
     }
 
     @Override
     public Book addBook(String title, String authorName) {
-        Book book = new Book(0L, title, Collections.singletonList(new Author(0L, authorName)));
+        Author author = authorDao.findByNameWithBook(authorName).orElse(new Author(authorName));
+        Book book = new Book(title, Collections.singletonList(author));
+        authorDao.saveAndFlush(author);
         bookDao.saveAndFlush(book);
         return book;
     }
@@ -33,7 +38,10 @@ public class BookServiceImpl implements BookService {
         Book book = bookDao.findById(id).orElseThrow(() -> new LibraryServiceException("Can't get book with id: " + id));
         List<Author> authors = book.getAuthors();
         if (authors.stream().noneMatch(author -> authorName.equalsIgnoreCase(author.getName()))) {
-            authors.add(new Author(0L, authorName));
+            Author author = authorDao.findByNameWithBook(authorName).orElse(new Author(authorName));
+            author.getBooks().add(book);
+            authorDao.saveAndFlush(author);
+            authors.add(author);
             book.setAuthors(authors);
         }
         book.setTitle(title);

@@ -8,8 +8,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.spring.library.domain.Author;
+import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.repository.AuthorDao;
+import ru.otus.spring.library.repository.JpaRepositoryException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +72,13 @@ class AuthorDaoTest {
             Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
             assertThat(value).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
         });
+    }
+
+    @Test
+    @DisplayName("Должен получать все книги автора")
+    void getAllWhereAuthorId() throws JpaRepositoryException {
+        List<Book> books = authorDao.getAuthorByIdWithBook(EXISTING_AUTHOR_ID_2).getBooks();
+        assertEquals(books.size(), 2);
     }
 
     @Test

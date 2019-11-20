@@ -2,6 +2,7 @@ package ru.otus.spring.library.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.LibraryServiceException;
 import ru.otus.spring.library.service.MessageService;
@@ -25,7 +26,7 @@ public class AuthorShellService {
         }
     }
 
-    @ShellMethod(value = "Update existing author", key = {"ua", "saveAuthor"})
+    @ShellMethod(value = "Update existing author", key = {"ua", "updateAuthor"})
     public void updateAuthor(long id, String name) {
         try {
             ms.printMessage(authorService.updateAuthor(id, name).toString());
@@ -38,6 +39,16 @@ public class AuthorShellService {
     public void getAuthorById(long id) {
         try {
             ms.printMessage("Returned Author: " + authorService.getAuthorById(id));
+        } catch (LibraryServiceException e) {
+            ms.printMessage(e.getMessage());
+        }
+    }
+
+    @ShellMethod(value = "Get Author by id with book", key = {"gawb", "getAuthorWithBook"})
+    public void getAuthorByIdWithBook(long id) {
+        try {
+            Author author = authorService.getAuthorByIdWithBook(id);
+            ms.printMessage("Returned Author: " + author + ", books: " + author.getBooks().toString());
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }

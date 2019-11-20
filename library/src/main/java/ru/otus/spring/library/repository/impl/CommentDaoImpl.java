@@ -1,5 +1,6 @@
 package ru.otus.spring.library.repository.impl;
 
+import lombok.val;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,6 @@ import ru.otus.spring.library.repository.JpaRepositoryException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 @SuppressWarnings("JpaQlInspection")
 @Repository
@@ -21,7 +21,7 @@ public class CommentDaoImpl implements CommentDaoCustom {
 
     @Override
     public Comment getCommentByIdWithBook(long commentId) throws JpaRepositoryException {
-        TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.id = :commentId", Comment.class);
+        val query = em.createQuery("select c from Comment c where c.id = :commentId", Comment.class);
         query.setParameter("commentId", commentId);
         try {
             Comment comment = query.getSingleResult();

@@ -21,7 +21,7 @@ public class BookShellService {
         ms.printMessage(bookService.addBook(title, authorName).toString());
     }
 
-    @ShellMethod(value = "Update existing book", key = {"ub", "saveBook"})
+    @ShellMethod(value = "Update existing book", key = {"ub", "updateBook"})
     public void updateBook(long id, String title, String authorName) {
         try {
             ms.printMessage(bookService.updateBook(id, title, authorName).toString());

@@ -4,26 +4,27 @@ import org.springframework.stereotype.Service;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.repository.AuthorDao;
-import ru.otus.spring.library.repository.BookDao;
+import ru.otus.spring.library.repository.JpaRepositoryException;
 import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.LibraryServiceException;
+import ru.otus.spring.library.service.MessageService;
 
 import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorDao authorDao;
-    private final BookDao bookDao;
+    private final MessageService ms;
 
-    public AuthorServiceImpl(AuthorDao authorDao, BookDao bookDao) {
+    public AuthorServiceImpl(AuthorDao authorDao, MessageService ms) {
         this.authorDao = authorDao;
-        this.bookDao = bookDao;
+        this.ms = ms;
     }
 
     @Override
     public Author addAuthor(String name) {
         return authorDao.findByName(name).orElseGet(() -> {
-            Author author = new Author(0L, name);
+            Author author = new Author(name);
             authorDao.saveAndFlush(author);
             return author;
         });
@@ -43,8 +44,23 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public Author getAuthorByIdWithBook(long id) throws LibraryServiceException {
+        try {
+            return authorDao.getAuthorByIdWithBook(id);
+        } catch (JpaRepositoryException e) {
+            ms.printMessage(e.getMessage());
+            throw new LibraryServiceException("Can't get comment with id: " + id);
+        }
+    }
+
+    @Override
     public void deleteAuthorById(long id) throws LibraryServiceException {
-        List<Book> allBooksWhereAuthorId = bookDao.getAllWhereAuthorId(id);
+        List<Book> allBooksWhereAuthorId;
+        try {
+            allBooksWhereAuthorId = authorDao.getAuthorByIdWithBook(id).getBooks();
+        } catch (JpaRepositoryException e) {
+            throw new LibraryServiceException("Can't delete author with id: " + id);
+        }
         if (allBooksWhereAuthorId.size() > 0) {
             throw new LibraryServiceException("Can't delete author with id: " + id + ". Author still has books!");
         }
