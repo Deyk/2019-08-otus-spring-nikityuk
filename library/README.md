@@ -16,3 +16,7 @@
 
 # "Белая магия" Spring Data: Spring Data JPA  (homework07)
 * Переписать библиотеку на Spring Data JPA
+
+# Spring Data для подключения к нереляционным БД (homework08)
+* Использовать MogoDB и spring-data для хранения информации о книгах
+* Тесты можно реализовать с помощью spring-boot-starter-embedded-mongodb

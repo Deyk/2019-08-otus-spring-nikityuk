@@ -12,6 +12,7 @@ Contains homework for Spring Framework course by Otus.
 5) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework05 - DAO на Spring JDBC
 6) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework06 - JPQL, Spring ORM, DAO на основе Spring ORM + JPA
 7) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework07 - "Белая магия" Spring Data: Spring Data JPA 
+8) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework08 - Spring Data для подключения к нереляционным БД 
 
 Useful links:
 * Course page - https://otus.ru/learning/31566/#/
