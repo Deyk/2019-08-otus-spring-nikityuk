@@ -21,7 +21,7 @@ public class BookShellService {
         ms.printMessage(bookService.addBook(title, authorName).toString());
     }
 
-    @ShellMethod(value = "Update existing book", key = {"ub", "saveBook"})
+    @ShellMethod(value = "Update existing book", key = {"ub", "updateBook"})
     public void updateBook(long id, String title, String authorName) {
         try {
             ms.printMessage(bookService.updateBook(id, title, authorName).toString());
@@ -41,12 +41,8 @@ public class BookShellService {
 
     @ShellMethod(value = "Delete book by id", key = {"db", "deleteBook"})
     public void deleteBookById(long id) {
-        try {
-            bookService.deleteBookById(id);
-            ms.printMessage("Book " + id + " is deleted");
-        } catch (LibraryServiceException e) {
-            ms.printMessage(e.getMessage());
-        }
+        bookService.deleteBookById(id);
+        ms.printMessage("Book " + id + " is deleted");
     }
 
     @ShellMethod(value = "Get all books", key = {"gab", "getAllBooks"})

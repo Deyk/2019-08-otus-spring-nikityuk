@@ -11,7 +11,7 @@ public interface BookService {
 
     Book getBookById(long id) throws LibraryServiceException;
 
-    void deleteBookById(long id) throws LibraryServiceException;
+    void deleteBookById(long id);
 
     List<Book> getAllBooks();
 }

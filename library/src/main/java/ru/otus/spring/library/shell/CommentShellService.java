@@ -47,7 +47,7 @@ public class CommentShellService {
         }
     }
 
-    @ShellMethod(value = "Get comment to the book with book", key = {"gcb", "getCommentWithBook"})
+    @ShellMethod(value = "Get comment to the book with book", key = {"gcwb", "getCommentWithBook"})
     public void getCommentByIdWithBook(long commentId) {
         try {
             ms.printMessage(commentService.getCommentByIdWithBook(commentId).toString());
@@ -58,15 +58,11 @@ public class CommentShellService {
 
     @ShellMethod(value = "Delete comment to the book", key = {"dc", "deleteComment"})
     public void deleteCommentById(long commentId) {
-        try {
-            commentService.deleteCommentById(commentId);
-            ms.printMessage("Comment " + commentId + " is deleted");
-        } catch (LibraryServiceException e) {
-            ms.printMessage(e.getMessage());
-        }
+        commentService.deleteCommentById(commentId);
+        ms.printMessage("Comment " + commentId + " is deleted");
     }
 
-    @ShellMethod(value = "Get all comments for book", key = {"gacb", "getAllCommentsForBook"})
+    @ShellMethod(value = "Get all comments for book", key = {"gacfb", "getAllCommentsForBook"})
     public void getAllCommentsForBook(long bookId) {
         commentService.getAllCommentsForBook(bookId).forEach(comment ->
                 ms.printMessage("Comment lazy loaded: " + comment.getId() + " text: " + comment.getText() + " date: " + comment.getDate()));

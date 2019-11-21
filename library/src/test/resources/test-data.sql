@@ -13,4 +13,5 @@ values (1, 1),
        (2, 2);
 
 insert into comment (text, date, book_id)
-values ('comment_01', '2019-11-09 20:00:00.000', 1);
+values ('comment_01', '2019-11-09 20:00:00.000', 1),
+       ('comment_02', '2019-11-09 20:00:00.000', 1);

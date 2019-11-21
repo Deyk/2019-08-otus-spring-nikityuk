@@ -27,49 +27,31 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment addComment(String text, long bookId) throws LibraryServiceException {
-        try {
-            Comment comment = new Comment(0L, text, new Date(), bookDao.getBookById(bookId));
-            commentDao.saveComment(comment);
-            return comment;
-        } catch (JpaRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't add comment to book with id: " + bookId);
-        }
+        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't add comment to book with id: " + bookId));
+        Comment comment = new Comment(0L, text, new Date(), book);
+        commentDao.saveAndFlush(comment);
+        return comment;
     }
 
     @Override
     public Comment updateComment(long commentId, String text, long bookId) throws LibraryServiceException {
         Comment comment;
-        Book book;
-
         try {
             comment = commentDao.getCommentByIdWithBook(commentId);
         } catch (JpaRepositoryException e) {
             ms.printMessage(e.getMessage());
             throw new LibraryServiceException("Can't get comment with id: " + commentId);
         }
-
-        try {
-            book = bookDao.getBookById(bookId);
-        } catch (JpaRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't get book with id: " + bookId);
-        }
-
+        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't add comment to book with id: " + bookId));
         comment.setText(text);
         comment.setBook(book);
-        commentDao.saveComment(comment);
+        commentDao.saveAndFlush(comment);
         return comment;
     }
 
     @Override
     public Comment getCommentById(long commentId) throws LibraryServiceException {
-        try {
-            return commentDao.getCommentById(commentId);
-        } catch (JpaRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't get comment with id: " + commentId);
-        }
+        return commentDao.findById(commentId).orElseThrow(() -> new LibraryServiceException("Can't get comment with id: " + commentId));
     }
 
     @Override
@@ -83,17 +65,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteCommentById(long commentId) throws LibraryServiceException {
-        try {
-            commentDao.deleteCommentById(commentId);
-        } catch (JpaRepositoryException e) {
-            ms.printMessage(e.getMessage());
-            throw new LibraryServiceException("Can't delete comment with id: " + commentId);
-        }
+    public void deleteCommentById(long commentId) {
+        commentDao.deleteById(commentId);
     }
 
     @Override
     public List<Comment> getAllCommentsForBook(long bookId) {
-        return commentDao.getAllCommentsForBook(bookId);
+        return commentDao.getAllByBook_Id(bookId);
     }
 }
