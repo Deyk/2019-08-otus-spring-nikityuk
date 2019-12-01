@@ -23,13 +23,12 @@ public class Author {
 
     private List<Book> books = new ArrayList<>();
 
-    public Author(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Author(String name) {
         this.name = name;
     }
 
+    public Author(String name, List<Book> books) {
+        this.name = name;
+        this.books = books;
+    }
 }

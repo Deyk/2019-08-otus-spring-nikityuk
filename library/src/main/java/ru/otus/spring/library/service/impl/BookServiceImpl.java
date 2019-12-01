@@ -9,6 +9,7 @@ import ru.otus.spring.library.repository.CommentDao;
 import ru.otus.spring.library.service.BookService;
 import ru.otus.spring.library.service.LibraryServiceException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book addBook(String title, String authorName) {
         Author author = authorDao.findByName(authorName).orElse(new Author(authorName));
-        Book book = new Book(title, Collections.singletonList(author));
+        Book book = new Book(title, Collections.singletonList(author), new ArrayList<>());
         authorDao.save(author);
         bookDao.save(book);
         return book;

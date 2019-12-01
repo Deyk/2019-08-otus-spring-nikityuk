@@ -3,6 +3,7 @@ package ru.otus.spring.library.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -18,17 +19,14 @@ public class Book {
     private String title;
 
     private List<Author> authors;
+    @DBRef(lazy = true)
+    private List<Comment> comments;
 
-    public Book(String id, String title, List<Author> authors) {
-        this.id = id;
+    public Book(String title, List<Author> authors, List<Comment> comments) {
         this.title = title;
         this.authors = authors;
+        this.comments = comments;
         this.authors.forEach(author -> author.getBooks().add(this));
-    }
-
-    public Book(String title, List<Author> authors) {
-        this.title = title;
-        this.authors = authors;
-        this.authors.forEach(author -> author.getBooks().add(this));
+        this.comments.forEach(comment -> comment.setBook(this));
     }
 }
