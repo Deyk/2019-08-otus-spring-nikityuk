@@ -26,36 +26,36 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(String title, String authorName) {
-        Author author = authorDao.findByNameWithBook(authorName).orElse(new Author(authorName));
+        Author author = authorDao.findByName(authorName).orElse(new Author(authorName));
         Book book = new Book(title, Collections.singletonList(author));
-        authorDao.saveAndFlush(author);
-        bookDao.saveAndFlush(book);
+        authorDao.save(author);
+        bookDao.save(book);
         return book;
     }
 
     @Override
-    public Book updateBook(long id, String title, String authorName) throws LibraryServiceException {
+    public Book updateBook(String id, String title, String authorName) throws LibraryServiceException {
         Book book = bookDao.findById(id).orElseThrow(() -> new LibraryServiceException("Can't get book with id: " + id));
         List<Author> authors = book.getAuthors();
         if (authors.stream().noneMatch(author -> authorName.equalsIgnoreCase(author.getName()))) {
-            Author author = authorDao.findByNameWithBook(authorName).orElse(new Author(authorName));
+            Author author = authorDao.findByName(authorName).orElse(new Author(authorName));
             author.getBooks().add(book);
-            authorDao.saveAndFlush(author);
+            authorDao.save(author);
             authors.add(author);
             book.setAuthors(authors);
         }
         book.setTitle(title);
-        bookDao.saveAndFlush(book);
+        bookDao.save(book);
         return book;
     }
 
     @Override
-    public Book getBookById(long id) throws LibraryServiceException {
+    public Book getBookById(String id) throws LibraryServiceException {
         return bookDao.findById(id).orElseThrow(() -> new LibraryServiceException("Can't get book with id: " + id));
     }
 
     @Override
-    public void deleteBookById(long id) {
+    public void deleteBookById(String id) {
         if (bookDao.existsById(id)) {
             commentDao.deleteAllByBook_Id(id);
             bookDao.deleteById(id);

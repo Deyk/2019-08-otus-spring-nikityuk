@@ -27,7 +27,7 @@ public class AuthorShellService {
     }
 
     @ShellMethod(value = "Update existing author", key = {"ua", "updateAuthor"})
-    public void updateAuthor(long id, String name) {
+    public void updateAuthor(String id, String name) {
         try {
             ms.printMessage(authorService.updateAuthor(id, name).toString());
         } catch (LibraryServiceException e) {
@@ -36,7 +36,7 @@ public class AuthorShellService {
     }
 
     @ShellMethod(value = "Get Author by id", key = {"ga", "getAuthor"})
-    public void getAuthorById(long id) {
+    public void getAuthorById(String id) {
         try {
             ms.printMessage("Returned Author: " + authorService.getAuthorById(id));
         } catch (LibraryServiceException e) {
@@ -45,7 +45,7 @@ public class AuthorShellService {
     }
 
     @ShellMethod(value = "Get Author by id with book", key = {"gawb", "getAuthorWithBook"})
-    public void getAuthorByIdWithBook(long id) {
+    public void getAuthorByIdWithBook(String id) {
         try {
             Author author = authorService.getAuthorByIdWithBook(id);
             ms.printMessage("Returned Author: " + author + ", books: " + author.getBooks().toString());
@@ -55,7 +55,7 @@ public class AuthorShellService {
     }
 
     @ShellMethod(value = "Delete Author by id", key = {"da", "deleteAuthor"})
-    public void deleteAuthorById(long id) {
+    public void deleteAuthorById(String id) {
         try {
             authorService.deleteAuthorById(id);
             ms.printMessage("Author " + id + " is deleted");

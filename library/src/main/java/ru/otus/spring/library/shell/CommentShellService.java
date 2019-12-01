@@ -18,7 +18,7 @@ public class CommentShellService {
     }
 
     @ShellMethod(value = "Add new comment to the book", key = {"ac", "addComment"})
-    public void addComment(String text, long bookId) {
+    public void addComment(String text, String bookId) {
         try {
             Comment comment = commentService.addComment(text, bookId);
             ms.printMessage("Comment added: " + comment.getId() + " text: " + comment.getText() + " date: " + comment.getDate());
@@ -28,7 +28,7 @@ public class CommentShellService {
     }
 
     @ShellMethod(value = "Add new comment to the book", key = {"uc", "updateComment"})
-    public void updateComment(long commentId, String text, long bookId) {
+    public void updateComment(String commentId, String text, String bookId) {
         try {
             Comment comment = commentService.updateComment(commentId, text, bookId);
             ms.printMessage("Comment updated: " + comment.getId() + " text: " + comment.getText() + " date: " + comment.getDate());
@@ -38,7 +38,7 @@ public class CommentShellService {
     }
 
     @ShellMethod(value = "Get comment to the book", key = {"gc", "getComment"})
-    public void getCommentById(long commentId) {
+    public void getCommentById(String commentId) {
         try {
             Comment comment = commentService.getCommentById(commentId);
             ms.printMessage("Comment lazy loaded: " + comment.getId() + " text: " + comment.getText() + " date: " + comment.getDate());
@@ -48,7 +48,7 @@ public class CommentShellService {
     }
 
     @ShellMethod(value = "Get comment to the book with book", key = {"gcwb", "getCommentWithBook"})
-    public void getCommentByIdWithBook(long commentId) {
+    public void getCommentByIdWithBook(String commentId) {
         try {
             ms.printMessage(commentService.getCommentByIdWithBook(commentId).toString());
         } catch (LibraryServiceException e) {
@@ -57,13 +57,13 @@ public class CommentShellService {
     }
 
     @ShellMethod(value = "Delete comment to the book", key = {"dc", "deleteComment"})
-    public void deleteCommentById(long commentId) {
+    public void deleteCommentById(String commentId) {
         commentService.deleteCommentById(commentId);
         ms.printMessage("Comment " + commentId + " is deleted");
     }
 
     @ShellMethod(value = "Get all comments for book", key = {"gacfb", "getAllCommentsForBook"})
-    public void getAllCommentsForBook(long bookId) {
+    public void getAllCommentsForBook(String bookId) {
         commentService.getAllCommentsForBook(bookId).forEach(comment ->
                 ms.printMessage("Comment lazy loaded: " + comment.getId() + " text: " + comment.getText() + " date: " + comment.getDate()));
     }

@@ -5,15 +5,15 @@ import ru.otus.spring.library.domain.Comment;
 import java.util.List;
 
 public interface CommentService {
-    Comment addComment(String text, long bookId) throws LibraryServiceException;
+    Comment addComment(String text, String bookId) throws LibraryServiceException;
 
-    Comment updateComment(long commentId, String text, long bookId) throws LibraryServiceException;
+    Comment updateComment(String commentId, String text, String bookId) throws LibraryServiceException;
 
-    Comment getCommentById(long commentId) throws LibraryServiceException;
+    Comment getCommentById(String commentId) throws LibraryServiceException;
 
-    Comment getCommentByIdWithBook(long commentId) throws LibraryServiceException;
+    Comment getCommentByIdWithBook(String commentId) throws LibraryServiceException;
 
-    void deleteCommentById(long commentId);
+    void deleteCommentById(String commentId);
 
-    List<Comment> getAllCommentsForBook(long bookId);
+    List<Comment> getAllCommentsForBook(String bookId);
 }
