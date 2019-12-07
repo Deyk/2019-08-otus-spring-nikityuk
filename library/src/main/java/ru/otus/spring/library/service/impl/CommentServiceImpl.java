@@ -24,19 +24,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment addComment(String text, String bookId) throws LibraryServiceException {
-        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't add comment to book with id: " + bookId));
-        Comment comment = new Comment(text, new Date(), book);
+        Comment comment = new Comment(text, new Date());
         commentDao.save(comment);
+        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't get book with id: " + bookId));
+        book.setComments(Collections.singletonList(comment));
+        bookDao.save(book);
         return comment;
     }
 
     @Override
-    public Comment updateComment(String commentId, String text, String bookId) throws LibraryServiceException {
-        Comment comment;
-        comment = commentDao.findById(commentId).orElseThrow(() -> new LibraryServiceException("Can't get comment with id: " + commentId));
-        Book book = bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't add comment to book with id: " + bookId));
+    public Comment updateComment(String commentId, String text) throws LibraryServiceException {
+        Comment comment = commentDao.findById(commentId).orElseThrow(() -> new LibraryServiceException("Can't get comment with id: " + commentId));
         comment.setText(text);
-        comment.setBook(book);
         commentDao.save(comment);
         return comment;
     }
@@ -47,17 +46,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getCommentByIdWithBook(String commentId) throws LibraryServiceException {
-        return commentDao.findById(commentId).orElseThrow(() -> new LibraryServiceException("Can't get comment with id: " + commentId));
-    }
-
-    @Override
     public void deleteCommentById(String commentId) {
         commentDao.deleteById(commentId);
     }
 
     @Override
-    public List<Comment> getAllCommentsForBook(String bookId) {
-        return (List<Comment>) commentDao.findAllById(Collections.singleton(bookId));
+    public List<Comment> getAllCommentsForBook(String bookId) throws LibraryServiceException {
+        return bookDao.findById(bookId).orElseThrow(() -> new LibraryServiceException("Can't get book with id: " + bookId)).getComments();
     }
 }

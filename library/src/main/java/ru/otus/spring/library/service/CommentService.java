@@ -7,13 +7,11 @@ import java.util.List;
 public interface CommentService {
     Comment addComment(String text, String bookId) throws LibraryServiceException;
 
-    Comment updateComment(String commentId, String text, String bookId) throws LibraryServiceException;
+    Comment updateComment(String commentId, String text) throws LibraryServiceException;
 
     Comment getCommentById(String commentId) throws LibraryServiceException;
 
-    Comment getCommentByIdWithBook(String commentId) throws LibraryServiceException;
-
     void deleteCommentById(String commentId);
 
-    List<Comment> getAllCommentsForBook(String bookId);
+    List<Comment> getAllCommentsForBook(String bookId) throws LibraryServiceException;
 }

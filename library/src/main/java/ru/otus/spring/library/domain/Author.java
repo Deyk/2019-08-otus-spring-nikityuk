@@ -1,5 +1,6 @@
 package ru.otus.spring.library.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -7,28 +8,18 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "author")
 public class Author {
-
     @Id
     private String id;
     @Indexed
     @Field("name")
     private String name;
 
-    private List<Book> books = new ArrayList<>();
-
     public Author(String name) {
         this.name = name;
-    }
-
-    public Author(String name, List<Book> books) {
-        this.name = name;
-        this.books = books;
     }
 }

@@ -12,8 +12,6 @@ public interface AuthorService {
 
     Author getAuthorById(String id) throws LibraryServiceException;
 
-    Author getAuthorByIdWithBook(String id) throws LibraryServiceException;
-
     void deleteAuthorById(String Id) throws LibraryServiceException;
 
     List<Author> getAllAuthors();

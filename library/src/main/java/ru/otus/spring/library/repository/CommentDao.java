@@ -5,5 +5,5 @@ import ru.otus.spring.library.domain.Comment;
 
 public interface CommentDao extends MongoRepository<Comment, String> {
 
-    void deleteAllByBook_Id(String id);
+
 }
