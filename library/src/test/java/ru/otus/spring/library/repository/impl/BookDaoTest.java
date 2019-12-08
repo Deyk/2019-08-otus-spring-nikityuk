@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
@@ -21,8 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("Тесты репозитория для работы с книгами")
-@DataMongoTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@DataMongoTest
+@ComponentScan({"ru.otus.spring.library.event", "ru.otus.spring.library.service"})
 class BookDaoTest {
     private static final String AUTHOR_NAME = "author_01";
     private static final String AUTHOR_NAME_2 = "author_02";
@@ -92,6 +94,7 @@ class BookDaoTest {
     void f() {
         bookDao.deleteById(BOOK_ID);
         assertEquals(bookDao.findById(BOOK_ID), Optional.empty());
+        assertEquals(authorDao.findAll().size(), 2);
     }
 
     @Test

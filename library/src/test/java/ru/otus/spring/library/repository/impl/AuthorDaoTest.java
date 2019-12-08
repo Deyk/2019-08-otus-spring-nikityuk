@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.repository.AuthorDao;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Тесты репозитория для работы с авторами")
 @DataMongoTest
+@ComponentScan({"ru.otus.spring.library.event", "ru.otus.spring.library.service"})
 class AuthorDaoTest {
     private static final String NEW_AUTHOR_NAME = "new author";
     private static final String AUTHOR_ID = "1";

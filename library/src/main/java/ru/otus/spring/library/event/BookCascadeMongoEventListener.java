@@ -1,11 +1,11 @@
 package ru.otus.spring.library.event;
 
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.service.MessageService;
@@ -15,12 +15,17 @@ import java.util.Objects;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+@Component
 public class BookCascadeMongoEventListener extends AbstractMongoEventListener<Book> {
     private static final String ID = "_id";
-    @Autowired
-    private MongoOperations mongoOperations;
-    @Autowired
-    private MessageService ms;
+
+    private final MessageService ms;
+    private final MongoOperations mongoOperations;
+
+    public BookCascadeMongoEventListener(MessageService ms, MongoOperations mongoOperations) {
+        this.ms = ms;
+        this.mongoOperations = mongoOperations;
+    }
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<Book> event) {

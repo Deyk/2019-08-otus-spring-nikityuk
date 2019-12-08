@@ -2,6 +2,7 @@ package ru.otus.spring.library.config.changelogs;
 
 import com.github.mongobee.changeset.ChangeLog;
 import com.github.mongobee.changeset.ChangeSet;
+import com.mongodb.client.MongoDatabase;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
@@ -13,7 +14,13 @@ import java.util.Date;
 
 @ChangeLog
 public class DatabaseChangelog {
-    @ChangeSet(order = "001", id = "initData", author = "databaseChangelog")
+
+    @ChangeSet(order = "000", id = "dropDB", author = "databaseChangelog", runAlways = true)
+    public void dropDB(MongoDatabase database) {
+        database.drop();
+    }
+
+    @ChangeSet(order = "001", id = "initData", author = "databaseChangelog", runAlways = true)
     public void initData(MongoTemplate mongoTemplate) {
         Author author_1 = mongoTemplate.save(new Author("author_01"));
         Author author_2 = mongoTemplate.save(new Author("author_02"));
