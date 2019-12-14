@@ -7,11 +7,11 @@ import java.util.List;
 public interface BookService {
     Book addBook(String title, String authorName);
 
-    Book updateBook(long id, String title, String authorName) throws LibraryServiceException;
+    Book updateBook(String id, String title, String authorName) throws LibraryServiceException;
 
-    Book getBookById(long id) throws LibraryServiceException;
+    Book getBookById(String id) throws LibraryServiceException;
 
-    void deleteBookById(long id);
+    void deleteBookById(String id);
 
     List<Book> getAllBooks();
 }

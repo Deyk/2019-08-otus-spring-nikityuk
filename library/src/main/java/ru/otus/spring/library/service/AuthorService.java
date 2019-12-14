@@ -8,13 +8,11 @@ public interface AuthorService {
 
     Author addAuthor(String name);
 
-    Author updateAuthor(long id, String name) throws LibraryServiceException;
+    Author updateAuthor(String id, String name) throws LibraryServiceException;
 
-    Author getAuthorById(long id) throws LibraryServiceException;
+    Author getAuthorById(String id) throws LibraryServiceException;
 
-    Author getAuthorByIdWithBook(long id) throws LibraryServiceException;
-
-    void deleteAuthorById(long Id) throws LibraryServiceException;
+    void deleteAuthorById(String Id) throws LibraryServiceException;
 
     List<Author> getAllAuthors();
 }

@@ -20,42 +20,32 @@ public class AuthorShellService {
     @ShellMethod(value = "Add new author", key = {"aa", "addAuthor"})
     public void addAuthor(String name) {
         try {
-            ms.printMessage(authorService.addAuthor(name).toString());
+            ms.printMessage("Author added: " + authorService.addAuthor(name));
         } catch (Exception e) {
             ms.printMessage(e.getMessage());
         }
     }
 
     @ShellMethod(value = "Update existing author", key = {"ua", "updateAuthor"})
-    public void updateAuthor(long id, String name) {
+    public void updateAuthor(String id, String name) {
         try {
-            ms.printMessage(authorService.updateAuthor(id, name).toString());
+            ms.printMessage("Author updated: " + authorService.updateAuthor(id, name));
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
     }
 
     @ShellMethod(value = "Get Author by id", key = {"ga", "getAuthor"})
-    public void getAuthorById(long id) {
+    public void getAuthorById(String id) {
         try {
-            ms.printMessage("Returned Author: " + authorService.getAuthorById(id));
-        } catch (LibraryServiceException e) {
-            ms.printMessage(e.getMessage());
-        }
-    }
-
-    @ShellMethod(value = "Get Author by id with book", key = {"gawb", "getAuthorWithBook"})
-    public void getAuthorByIdWithBook(long id) {
-        try {
-            Author author = authorService.getAuthorByIdWithBook(id);
-            ms.printMessage("Returned Author: " + author + ", books: " + author.getBooks().toString());
+            ms.printMessage("Returned author: " + authorService.getAuthorById(id));
         } catch (LibraryServiceException e) {
             ms.printMessage(e.getMessage());
         }
     }
 
     @ShellMethod(value = "Delete Author by id", key = {"da", "deleteAuthor"})
-    public void deleteAuthorById(long id) {
+    public void deleteAuthorById(String id) {
         try {
             authorService.deleteAuthorById(id);
             ms.printMessage("Author " + id + " is deleted");

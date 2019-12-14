@@ -3,63 +3,55 @@ package ru.otus.spring.library.repository.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.library.domain.Author;
-import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.repository.AuthorDao;
-import ru.otus.spring.library.repository.JpaRepositoryException;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Тесты репозитория для работы с авторами")
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DataMongoTest
+@ComponentScan({"ru.otus.spring.library.event", "ru.otus.spring.library.service"})
 class AuthorDaoTest {
     private static final String NEW_AUTHOR_NAME = "new author";
-    private static final String EXISTING_AUTHOR_NAME = "author_01";
-    private static final long NEW_AUTHOR_ID = 4L;
-    private static final long EXISTING_AUTHOR_ID = 1L;
-    private static final long EXISTING_AUTHOR_ID_2 = 2L;
-    private static final long EXISTING_AUTHOR_ID_3 = 3L;
-    private static final long DEFAULT_ID = 0L;
+    private static final String AUTHOR_ID = "1";
+    private static final String AUTHOR_ID_2 = "2";
+    private static final String NOT_EXISTING_AUTHOR_ID = "0";
 
     @Autowired
     AuthorDao authorDao;
     @Autowired
-    private TestEntityManager tem;
+    private MongoTemplate mongoTemplate;
 
     @Test
     @DisplayName("Должен добавлять автора")
     void insertAuthor() {
-        Author author = new Author(DEFAULT_ID, NEW_AUTHOR_NAME);
-        authorDao.saveAndFlush(author);
-        Author expectedAuthor = tem.find(Author.class, NEW_AUTHOR_ID);
+        Author author = new Author(AUTHOR_ID, NEW_AUTHOR_NAME);
+        authorDao.save(author);
+        Author expectedAuthor = mongoTemplate.findById(AUTHOR_ID, Author.class);
         assertThat(author).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }
 
     @Test
     @DisplayName("Должен изменять поля автора")
     void saveAuthor() {
-        Author author = new Author(EXISTING_AUTHOR_ID, NEW_AUTHOR_NAME);
-        authorDao.saveAndFlush(author);
-        Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
+        Author author = new Author(AUTHOR_ID, NEW_AUTHOR_NAME);
+        authorDao.save(author);
+        Author expectedAuthor = mongoTemplate.findById(AUTHOR_ID, Author.class);
         assertThat(author).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }
 
     @Test
     @DisplayName("Должен получать существующего автора по id")
     void getAuthorById() {
-        Optional<Author> author = authorDao.findById(EXISTING_AUTHOR_ID);
+        Optional<Author> author = authorDao.findById(AUTHOR_ID);
         author.ifPresent(value -> {
-            Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
+            Author expectedAuthor = mongoTemplate.findById(AUTHOR_ID, Author.class);
             assertThat(value).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
         });
     }
@@ -67,49 +59,31 @@ class AuthorDaoTest {
     @Test
     @DisplayName("Должен получать существующего автора по имени")
     void getAuthorByName() {
-        Optional<Author> author = authorDao.findByName(EXISTING_AUTHOR_NAME);
+        Optional<Author> author = authorDao.findByName(NEW_AUTHOR_NAME);
         author.ifPresent(value -> {
-            Author expectedAuthor = tem.find(Author.class, EXISTING_AUTHOR_ID);
+            Author expectedAuthor = mongoTemplate.findById(AUTHOR_ID, Author.class);
             assertThat(value).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
         });
     }
 
     @Test
-    @DisplayName("Должен получать все книги автора")
-    void getAllWhereAuthorId() throws JpaRepositoryException {
-        List<Book> books = authorDao.getAuthorByIdWithBook(EXISTING_AUTHOR_ID_2).getBooks();
-        assertEquals(books.size(), 2);
-    }
-
-    @Test
     @DisplayName("Должен возвращать Optional.empty при попытке достать несуществующего автора")
     void getNonexistentAuthorById() {
-        assertEquals(authorDao.findById(NEW_AUTHOR_ID), Optional.empty());
-    }
-
-    @Test
-    @DisplayName("Должен не удалять несуществующего автора ")
-    void deleteNonexistentAuthorById() {
-        assertThatThrownBy(() -> authorDao.deleteById(NEW_AUTHOR_ID)).isInstanceOf(EmptyResultDataAccessException.class);
+        assertEquals(authorDao.findById(NOT_EXISTING_AUTHOR_ID), Optional.empty());
     }
 
     @Test
     @DisplayName("Должен удалять все записи автора")
     void deleteAuthorWithBookById() {
-        authorDao.deleteById(EXISTING_AUTHOR_ID_2);
-        assertEquals(authorDao.findById(EXISTING_AUTHOR_ID_2), Optional.empty());
-    }
-
-    @Test
-    @DisplayName("Должен удалять все записи автора без книг")
-    void deleteAuthorById() {
-        authorDao.deleteById(EXISTING_AUTHOR_ID_3);
-        assertEquals(authorDao.findById(EXISTING_AUTHOR_ID_3), Optional.empty());
+        mongoTemplate.save(new Author(AUTHOR_ID_2, NEW_AUTHOR_NAME));
+        authorDao.deleteById(AUTHOR_ID_2);
+        assertEquals(authorDao.findById(AUTHOR_ID_2), Optional.empty());
     }
 
     @Test
     @DisplayName("Должен вернуть все записи авторов")
     void getAllAuthors() {
-        assertThat(authorDao.findAll()).hasSize(3);
+        mongoTemplate.save(new Author(AUTHOR_ID_2, NEW_AUTHOR_NAME));
+        assertThat(authorDao.findAll()).hasSize(2);
     }
 }

@@ -1,40 +1,34 @@
 package ru.otus.spring.library.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "book")
+@AllArgsConstructor
+@Document(collection = "book")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "title", nullable = false)
+    private String id;
+    @Field("title")
     private String title;
 
-    @ManyToMany(targetEntity = Author.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
+    @DBRef(lazy = true)
+    private List<Comment> comments;
 
-    public Book(long id, String title, List<Author> authors) {
-        this.id = id;
+    @PersistenceConstructor
+    public Book(String title, List<Author> authors, List<Comment> comments) {
         this.title = title;
         this.authors = authors;
-        this.authors.forEach(author -> author.getBooks().add(this));
-    }
-
-    public Book(String title, List<Author> authors) {
-        this.title = title;
-        this.authors = authors;
-        this.authors.forEach(author -> author.getBooks().add(this));
+        this.comments = comments;
     }
 }

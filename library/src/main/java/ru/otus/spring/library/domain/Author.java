@@ -1,39 +1,25 @@
 package ru.otus.spring.library.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "author")
+@AllArgsConstructor
+@Document(collection = "author")
 public class Author {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "name", nullable = false, unique = true)
+    private String id;
+    @Indexed
+    @Field("name")
     private String name;
-
-    @ManyToMany(mappedBy = "authors", cascade = CascadeType.MERGE)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<Book> books = new ArrayList<>();
-
-    public Author(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public Author(String name) {
         this.name = name;
     }
-
 }
