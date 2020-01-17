@@ -17,6 +17,23 @@
 <body>
 <h1>authors:</h1>
 
+<div>
+    <label for="add-author">Add new author:</label>
+    <form id="add-author"
+          th:action="@{/authors/add}" action="list.html"
+          th:method="post">
+
+        <div class="row">
+            <label for="holder-input">Name:</label>
+            <input id="holder-input" name="name" type="text" placeholder="Name"/>
+        </div>
+
+        <div class="row">
+            <button type="submit">Create</button>
+        </div>
+    </form>
+</div>
+
 <table class="authors">
     <thead>
     <tr>
@@ -31,6 +48,13 @@
         <td th:text="${author.name}">John Doe</td>
         <td>
             <a th:href="@{/authors/edit(id=${author.id})}" href="edit.html">Edit</a>
+        </td>
+        <td>
+            <form th:action="@{/authors/delete(id=${author.id})}" action="list.html"
+                  th:object="${author}"
+                  th:method="delete" method="post">
+                <button type="submit">Delete</button>
+            </form>
         </td>
     </tr>
     </tbody>

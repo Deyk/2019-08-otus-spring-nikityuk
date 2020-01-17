@@ -1,13 +1,10 @@
 package ru.otus.spring.library.rest;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.rest.model.AuthorDto;
 import ru.otus.spring.library.service.AuthorService;
@@ -32,6 +29,12 @@ public class AuthorController {
         return "list";
     }
 
+    @PostMapping("/authors/add")
+    public String addAuthor(@RequestParam("name") String name) {
+        authorService.addAuthor(name);
+        return "redirect:/authors";
+    }
+
     @GetMapping("/authors/edit")
     public String editPage(
             @RequestParam("id") String id,
@@ -42,10 +45,15 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/edit")
-    public ResponseEntity<AuthorDto> editAuthors(
-            AuthorRequest request) throws LibraryServiceException {
-        Author author = authorService.updateAuthor(request.getId(), request.getName());
-        return ResponseEntity.ok().body(AuthorDto.toDto(author));
+    public String editAuthors(AuthorRequest request) throws LibraryServiceException {
+        authorService.updateAuthor(request.getId(), request.getName());
+        return "redirect:/authors";
+    }
+
+    @DeleteMapping("/authors/delete")
+    public String deleteAuthor(@RequestParam("id") String authorId) throws LibraryServiceException {
+        authorService.deleteAuthorById(authorId);
+        return "redirect:/authors";
     }
 
     @ExceptionHandler(LibraryServiceException.class)
@@ -53,7 +61,7 @@ public class AuthorController {
         return ResponseEntity.badRequest().body("Not found");
     }
 
-    @Getter
+    @Data
     class AuthorRequest {
         private String id;
         private String name;

@@ -1,5 +1,6 @@
 package ru.otus.spring.library.repository.impl;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
