@@ -8,14 +8,11 @@
 <body>
 
 <div style="max-width: 800px; margin: auto; padding-top: 3em">
-    <div class="h5 text-center">Add author:</div>
+    <div class="h5">Add author:</div>
     <form id="add-author"
           th:action="@{/authors/add}" action="list.html"
           th:method="post">
         <div class="form-group form-row align-items-center">
-            <div class="col-1">
-                <label for="holder-input" class="col-form-label">Name:</label>
-            </div>
             <div class="col">
                 <input id="holder-input" class="form-control" name="name" type="text" placeholder="Name"/>
             </div>
@@ -31,8 +28,7 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
-            <th scope="col">Action</th>
-            <th scope="col">Action</th>
+            <th scope="colgroup" colspan="2">Actions</th>
         </tr>
         </thead>
         <tbody>
