@@ -26,7 +26,7 @@ public class AuthorController {
     public String showAuthors(Model model) {
         List<Author> allAuthors = authorService.getAllAuthors();
         model.addAttribute("authors", allAuthors.stream().map(AuthorDto::toDto).collect(Collectors.toList()));
-        return "list";
+        return "authorList";
     }
 
     @PostMapping("/authors/add")
@@ -41,7 +41,7 @@ public class AuthorController {
             Model model) throws LibraryServiceException {
         Author author = authorService.getAuthorById(id);
         model.addAttribute("author", author);
-        return "edit";
+        return "authorEdit";
     }
 
     @PostMapping("/authors/edit")
@@ -51,9 +51,9 @@ public class AuthorController {
     }
 
     @DeleteMapping("/authors/delete")
-    public String deleteAuthor(@RequestParam("id") String authorId) {
+    public String deleteAuthor(@RequestParam("id") String id) {
         try {
-            authorService.deleteAuthorById(authorId);
+            authorService.deleteAuthorById(id);
         } catch (LibraryServiceException e) {
             return "redirect:/authors";
         }
@@ -62,7 +62,7 @@ public class AuthorController {
 
     @ExceptionHandler(LibraryServiceException.class)
     public ResponseEntity<String> handleNotEnoughFunds(LibraryServiceException ex) {
-        return ResponseEntity.badRequest().body("Not found");
+        return ResponseEntity.badRequest().body("Not found author");
     }
 
     @Data
