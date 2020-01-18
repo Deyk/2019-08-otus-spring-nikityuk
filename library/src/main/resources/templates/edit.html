@@ -3,45 +3,27 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Edit author</title>
-    <style type="text/css">
-        body {
-            padding: 50px;
-        }
-
-        label {
-            display: inline-block;
-            width: 100px;
-        }
-
-        input:read-only {
-            background: lightgray;
-        }
-
-        .row {
-            margin-top: 10px;
-        }
-    </style>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 
-<!-- author edition -->
-<form id="edit-form" th:action="@{/authors/edit(id=${author.id})}" th:method="post" action="list.html">
-    <h1>author Info:</h1>
+<div style="max-width: 800px; margin: auto; padding-top: 3em">
+    <!-- author edition -->
+    <form id="edit-form" th:action="@{/authors/edit(id=${author.id})}" th:method="post" action="list.html">
+        <div class="display-4 text-center text-uppercase">Author Info:</div>
 
-    <div class="row">
-        <label for="id-input">ID:</label>
-        <input id="id-input" type="text" readonly="readonly" th:value="${author.id}" value="1"/>
-    </div>
+        <div class="form-group">
+            <label for="id-input">ID:</label>
+            <input id="id-input" class="form-control" type="text" readonly th:value="${author.id}" value="1"/>
+        </div>
 
-    <div class="row">
-        <label for="holder-input">Name:</label>
-        <input id="holder-input" name="name" type="text" th:value="${author.name}" value="John Doe"/>
-    </div>
+        <div class="form-group">
+            <label for="holder-input">Name:</label>
+            <input id="holder-input" class="form-control" name="name" type="text" th:value="${author.name}" value="John Doe"/>
+        </div>
 
-    <div class="row">
-        <button type="submit">Save</button>
-    </div>
-</form>
-
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>
 </body>
 </html>

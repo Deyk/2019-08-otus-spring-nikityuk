@@ -51,8 +51,12 @@ public class AuthorController {
     }
 
     @DeleteMapping("/authors/delete")
-    public String deleteAuthor(@RequestParam("id") String authorId) throws LibraryServiceException {
-        authorService.deleteAuthorById(authorId);
+    public String deleteAuthor(@RequestParam("id") String authorId) {
+        try {
+            authorService.deleteAuthorById(authorId);
+        } catch (LibraryServiceException e) {
+            return "redirect:/authors";
+        }
         return "redirect:/authors";
     }
 

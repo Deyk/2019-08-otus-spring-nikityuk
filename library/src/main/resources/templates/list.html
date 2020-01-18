@@ -3,61 +3,56 @@
 <head>
     <meta charset="UTF-8"/>
     <title>List of all authors</title>
-    <style type="text/css">
-        body {
-            padding: 50px;
-        }
-
-        .authors, .authors td {
-            border: 1px solid lightgray;
-            padding: 5px;
-        }
-    </style>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
-<h1>authors:</h1>
 
-<div>
-    <label for="add-author">Add new author:</label>
+<div style="max-width: 800px; margin: auto; padding-top: 3em">
+    <div class="h5 text-center">Add author:</div>
     <form id="add-author"
           th:action="@{/authors/add}" action="list.html"
           th:method="post">
-
-        <div class="row">
-            <label for="holder-input">Name:</label>
-            <input id="holder-input" name="name" type="text" placeholder="Name"/>
-        </div>
-
-        <div class="row">
-            <button type="submit">Create</button>
+        <div class="form-group form-row align-items-center">
+            <div class="col-1">
+                <label for="holder-input" class="col-form-label">Name:</label>
+            </div>
+            <div class="col">
+                <input id="holder-input" class="form-control" name="name" type="text" placeholder="Name"/>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary" type="submit">Create</button>
+            </div>
         </div>
     </form>
+
+    <table class="table table-hover">
+        <caption>List of all authors</caption>
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Action</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="author : ${authors}">
+            <td th:text="${author.id}">1</td>
+            <td th:text="${author.name}">John Doe</td>
+            <td>
+                <a th:href="@{/authors/edit(id=${author.id})}" class="text-decoration-none" href="edit.html">Edit</a>
+            </td>
+            <td>
+                <form th:action="@{/authors/delete(id=${author.id})}" action="list.html"
+                      th:object="${author}"
+                      th:method="delete" method="post">
+                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
-<table class="authors">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="author : ${authors}">
-        <td th:text="${author.id}">1</td>
-        <td th:text="${author.name}">John Doe</td>
-        <td>
-            <a th:href="@{/authors/edit(id=${author.id})}" href="edit.html">Edit</a>
-        </td>
-        <td>
-            <form th:action="@{/authors/delete(id=${author.id})}" action="list.html"
-                  th:object="${author}"
-                  th:method="delete" method="post">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
 </body>
 </html>
