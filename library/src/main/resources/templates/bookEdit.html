@@ -8,9 +8,8 @@
 <body>
 
 <div style="max-width: 800px; margin: auto; padding-top: 3em">
-    <!-- author edition -->
-    <form id="edit-form" th:action="@{/books/edit(id=${book.id})}" th:method="post" action="authorList.html">
-        <div class="display-4 text-center text-uppercase">Author Info:</div>
+    <form id="edit-form" th:action="@{/books/edit(id=${book.id})}" th:method="post" action="bookList.html">
+        <div class="display-4 text-center text-uppercase">Book Info:</div>
 
         <div class="form-group">
             <label for="id-input">ID:</label>
@@ -19,12 +18,13 @@
 
         <div class="form-group">
             <label for="title-input">Title:</label>
-            <input id="title-input" class="form-control" name="title-input" type="text" th:value="${book.title}" value="John Doe"/>
+            <input id="title-input" class="form-control" name="title" type="text" th:value="${book.title}" value="Title"/>
         </div>
 
-        <div class="form-group" th:each="author : ${book.authors}">
+        <div class="form-group" th:each="author, i : ${book.authors}">
             <label for="author-input">Author name:</label>
-            <input id="author-input" class="form-control" name="author-input" type="text" th:value="${author.name}" value="John Doe"/>
+            <input type="hidden" th:value="${i.count - 1}" name="authorIndex">
+            <input id="author-input" class="form-control" name="authorNames" type="text" th:value="${author.name}" value="John Doe"/>
         </div>
 
         <button class="btn btn-primary" type="submit">Save</button>
