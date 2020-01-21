@@ -31,9 +31,9 @@ public class BookController {
 
     @PostMapping("/books/add")
     public String addBook(
-            @RequestParam("title") String name,
+            @RequestParam("title") String title,
             @RequestParam("authorName") String authorName) {
-        bookService.addBook(name, authorName);
+        bookService.addBook(title, authorName);
         return "redirect:/books";
     }
 
@@ -47,7 +47,7 @@ public class BookController {
     }
 
     @PostMapping("/books/edit")
-    public String editBooks(BookRequest request) throws LibraryServiceException {
+    public String editBook(BookRequest request) throws LibraryServiceException {
         bookService.updateBook(request.getId(), request.getTitle(), request.getAuthorNames().get(request.getAuthorIndex()));
         return "redirect:/books";
     }
