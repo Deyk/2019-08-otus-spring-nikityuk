@@ -14,6 +14,7 @@ Contains homework for Spring Framework course by Otus.
 7) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework07 - "Белая магия" Spring Data: Spring Data JPA 
 8) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework08 - Spring Data для подключения к нереляционным БД 
 9) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework09 - Spring MVC View
+10) https://github.com/Deyk/2019-08-otus-spring-nikityuk/tree/homework10 - Современные приложения на Spring MVC
 
 Useful links:
 * Course page - https://otus.ru/learning/31566/#/

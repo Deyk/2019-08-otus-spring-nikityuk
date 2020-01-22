@@ -24,3 +24,7 @@
 # Spring MVC View (homework09)
 * CRUD приложение с Web UI и хранением данных в БД
 * View на Thymeleaf, classic Controllers
+
+# Современные приложения на Spring MVC (homework10)
+* Переписать приложение с классических View на AJAX архитектуру и REST-контроллеры
+* Опционально: Сделать SPA приложение на любом из Web-фреймоврков
