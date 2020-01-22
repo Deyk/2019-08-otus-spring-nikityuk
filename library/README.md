@@ -20,3 +20,7 @@
 # Spring Data для подключения к нереляционным БД (homework08)
 * Использовать MogoDB и spring-data для хранения информации о книгах
 * Тесты можно реализовать с помощью spring-boot-starter-embedded-mongodb
+
+# Spring MVC View (homework09)
+* CRUD приложение с Web UI и хранением данных в БД
+* View на Thymeleaf, classic Controllers
