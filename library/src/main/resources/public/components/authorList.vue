@@ -1,7 +1,5 @@
-export default {
-    name: 'author-list',
-    template:
-        `<div id="authorList">
+<template>
+    <div id="authorList">
         <div class="h5">Add author:</div>
         <form id="add-author">
             <div class="form-group form-row align-items-center">
@@ -36,20 +34,26 @@ export default {
             </tr>
             </tbody>
         </table>
-    </div>`,
-    props: [],
-    data: function () {
-        return {
-            authors: null
-        }
-    },
-    created: function () {
-        var that = this;
-        fetch('/authors')
-            .then(response => response.json())
-            .then(authors => {
-                that.authors = authors
-            });
-    },
-    methods: {}
-}
+    </div>
+</template>
+
+<script>
+    module.exports = {
+        name: 'author-list',
+        props: [],
+        data: function () {
+            return {
+                authors: null
+            }
+        },
+        created: function () {
+            var that = this;
+            fetch('/authors')
+                .then(response => response.json())
+                .then(authors => {
+                    that.authors = authors
+                });
+        },
+        methods: {}
+    }
+</script>

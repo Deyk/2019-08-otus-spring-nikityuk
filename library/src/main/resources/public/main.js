@@ -1,7 +1,5 @@
-import authorList from './components/authorList.js';
-
 new Vue({
     components: {
-        'author-list': authorList
+        'author-list': httpVueLoader('/components/authorList.vue')
     },
 }).$mount('#library');
