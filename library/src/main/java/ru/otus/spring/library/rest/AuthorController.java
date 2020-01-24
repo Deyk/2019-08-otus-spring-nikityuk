@@ -1,6 +1,7 @@
 package ru.otus.spring.library.rest;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.library.domain.Author;
@@ -33,29 +34,24 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/edit")
-    public AuthorDto editAuthors(@RequestBody AuthorRequest request) throws LibraryServiceException {
-        Author author = authorService.updateAuthor(request.getId(), request.getAuthorName());
+    @JsonValue
+    public AuthorDto editAuthors(@RequestBody AuthorDto authorDto) throws LibraryServiceException {
+        Author author = authorService.updateAuthor(authorDto.getId(), authorDto.getName());
         return new AuthorDto(author);
     }
 
     @DeleteMapping("/authors/delete")
-    public Boolean deleteAuthor(@RequestParam("id") String id) {
+    public ResponseEntity deleteAuthor(@RequestParam("id") String id) {
         try {
             authorService.deleteAuthorById(id);
         } catch (LibraryServiceException e) {
-            return false;
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        return true;
+        return ResponseEntity.ok().body(true);
     }
 
     @ExceptionHandler(LibraryServiceException.class)
     public ResponseEntity<String> handleNotEnoughFunds(LibraryServiceException ex) {
         return ResponseEntity.badRequest().body("Not found author");
-    }
-
-    @Data
-    class AuthorRequest {
-        private String id;
-        private String authorName;
     }
 }

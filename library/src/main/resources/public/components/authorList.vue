@@ -1,17 +1,17 @@
 <template>
-<!--    <nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--        <a class="navbar-brand" href="#">Library</a>-->
-<!--        <div class="collapse navbar-collapse" id="navbarNav">-->
-<!--            <ul class="navbar-nav">-->
-<!--                <li class="nav-item">-->
-<!--                    <router-link to="/books" class="nav-link" href="bookList.html">Books</router-link>-->
-<!--                </li>-->
-<!--                <li class="nav-item active">-->
-<!--                    <router-link to="/authors" class="nav-link" href="authorList.html">Authors</router-link>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </nav>-->
+    <!--    <nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+    <!--        <a class="navbar-brand" href="#">Library</a>-->
+    <!--        <div class="collapse navbar-collapse" id="navbarNav">-->
+    <!--            <ul class="navbar-nav">-->
+    <!--                <li class="nav-item">-->
+    <!--                    <router-link :to="{name: 'books'}" class="nav-link">Books</router-link>-->
+    <!--                </li>-->
+    <!--                <li class="nav-item active">-->
+    <!--                    <router-link :to="{name: 'authors'}" class="nav-link">Authors</router-link>-->
+    <!--                </li>-->
+    <!--            </ul>-->
+    <!--        </div>-->
+    <!--    </nav>-->
 
     <div id="authorList">
         <div class="h5">Add author:</div>
@@ -19,7 +19,7 @@
               @submit.prevent="createAuthor">
             <div class="form-group form-row align-items-center">
                 <div class="col">
-                    <input v-model.trim="authorName" class="form-control" name="name" type="text" placeholder="Name"/>
+                    <input v-model.trim="authorName" class="form-control" type="text" placeholder="Name"/>
                 </div>
                 <div class="col">
                     <button class="btn btn-primary" type="submit">Create</button>
@@ -41,7 +41,9 @@
                 <td>{{author.id}}</td>
                 <td>{{author.name}}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm" type="submit">Edit</button>
+                    <router-link :to="{name: 'authorEdit', params:{id: author.id, authorName: author.name}}"
+                                 class="btn btn-primary btn-sm">Edit
+                    </router-link>
                 </td>
                 <td>
                     <button class="btn btn-danger btn-sm" type="submit"
@@ -61,7 +63,6 @@
         data: function () {
             return {
                 authors: {},
-                id: '',
                 authorName: ''
             }
         },
@@ -98,33 +99,10 @@
                     method: 'DELETE',
                 };
                 fetch('/authors/delete?id=' + id, options)
-                    .then(response => response.json())
+                    .then(response => response.text())
                     .then(response => {
-                        if (response.error || response.false) {
-                            console.log(response.message)
-                        } else {
-                            that.getAuthors();
-                        }
-                    })
-            },
-            editAuthor: function () {
-                let that = this;
-                let payload = {
-                    id: this.id,
-                    authorName: this.authorName
-                };
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    body: JSON.stringify(payload)
-                };
-                fetch('/authors/edit', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if (response.error) {
-                            console.log(response.message)
+                        if (response !== 'true') {
+                            alert(response)
                         } else {
                             that.getAuthors();
                         }
