@@ -1,20 +1,21 @@
 <template>
-    <!--    <nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-    <!--        <a class="navbar-brand" href="#">Library</a>-->
-    <!--        <div class="collapse navbar-collapse" id="navbarNav">-->
-    <!--            <ul class="navbar-nav">-->
-    <!--                <li class="nav-item">-->
-    <!--                    <router-link :to="{name: 'books'}" class="nav-link">Books</router-link>-->
-    <!--                </li>-->
-    <!--                <li class="nav-item active">-->
-    <!--                    <router-link :to="{name: 'authors'}" class="nav-link">Authors</router-link>-->
-    <!--                </li>-->
-    <!--            </ul>-->
-    <!--        </div>-->
-    <!--    </nav>-->
-
     <div id="authorList">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Library</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <router-link :to="{name: 'books'}" class="nav-link">Books</router-link>
+                    </li>
+                    <li class="nav-item active">
+                        <router-link :to="{name: 'authors'}" class="nav-link">Authors</router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
         <div class="h5">Add author:</div>
+
         <form id="add-author"
               @submit.prevent="createAuthor">
             <div class="form-group form-row align-items-center">
@@ -59,7 +60,6 @@
 <script>
     module.exports = {
         name: 'author-list',
-        props: [],
         data: function () {
             return {
                 authors: {},

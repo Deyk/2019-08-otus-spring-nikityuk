@@ -1,5 +1,6 @@
 const authorsListPath = '/components/authorList.vue';
 const authorsEditPath = '/components/authorEdit.vue';
+const booksListPath = '/components/bookList.vue';
 
 let router = new VueRouter({
     routes: [
@@ -13,6 +14,11 @@ let router = new VueRouter({
             name: 'authorEdit',
             component: httpVueLoader(authorsEditPath),
             props: true
+        },
+        {
+            path: '/books',
+            name: 'books',
+            component: httpVueLoader(booksListPath)
         }
     ]
 });
@@ -20,7 +26,8 @@ let router = new VueRouter({
 new Vue({
     components: {
         'author-list': httpVueLoader(authorsListPath),
-        'author-edit': httpVueLoader(authorsEditPath)
+        'author-edit': httpVueLoader(authorsEditPath),
+        'book-list': httpVueLoader(booksListPath)
     },
     router
 }).$mount('#library');
