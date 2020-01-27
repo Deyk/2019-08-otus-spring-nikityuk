@@ -1,6 +1,5 @@
 package ru.otus.spring.library.rest;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,6 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/edit")
-    @JsonValue
     public AuthorDto editAuthors(@RequestBody AuthorDto authorDto) throws LibraryServiceException {
         Author author = authorService.updateAuthor(authorDto.getId(), authorDto.getName());
         return new AuthorDto(author);

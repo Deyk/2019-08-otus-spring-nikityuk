@@ -1,6 +1,5 @@
 package ru.otus.spring.library.rest;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.library.domain.Book;
@@ -21,7 +20,7 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public List<BookDto> showBooks() {
+    public List<BookDto> getAllBooks() {
         List<Book> allBooks = bookService.getAllBooks();
         return allBooks.stream().map(BookDto::toDto).collect(Collectors.toList());
     }
@@ -31,14 +30,13 @@ public class BookController {
             @RequestParam("title") String title,
             @RequestParam("authorName") String authorName) {
         Book book = bookService.addBook(title, authorName);
-        return new BookDto(book);
+        return getBookDto(book);
     }
 
     @PostMapping("/books/edit")
-    @JsonValue
     public BookDto editBook(@RequestBody BookDto request) throws LibraryServiceException {
         Book book = bookService.updateBook(request.getId(), request.getTitle(), request.getSelectedAuthor());
-        return new BookDto(book);
+        return getBookDto(book);
     }
 
     @DeleteMapping("/books/delete")
@@ -50,5 +48,9 @@ public class BookController {
     @ExceptionHandler(LibraryServiceException.class)
     public ResponseEntity<String> handleNotEnoughFunds(LibraryServiceException ex) {
         return ResponseEntity.badRequest().body("Not found book");
+    }
+
+    BookDto getBookDto(Book book) {
+        return new BookDto(book);
     }
 }
