@@ -21,21 +21,21 @@
                        type="text"/>
             </div>
 
-<!--            <select class="form-group"-->
-<!--                    v-model="selectedAuthor">-->
-<!--                <option disabled value="">Choose one author</option>-->
-<!--                <option v-for="name in authorNames"-->
-<!--                        :value="name">{{name}}-->
-<!--                </option>-->
-<!--            </select>-->
+            <select class="form-group"
+                    v-model="selectedAuthor">
+                <option disabled value="">Choose one author</option>
+                <option v-for="name in authorNames"
+                        :value="name">{{name}}
+                </option>
+            </select>
 
-<!--            <div class="form-group">-->
-<!--                <label for="selected-author-input">Author name:</label>-->
-<!--                <input id="selected-author-input"-->
-<!--                       v-model.trim="selectedAuthor"-->
-<!--                       class="form-control"-->
-<!--                       type="text"/>-->
-<!--            </div>-->
+            <div class="form-group">
+                <label for="selected-author-input">Author name:</label>
+                <input id="selected-author-input"
+                       v-model.trim="selectedAuthor"
+                       class="form-control"
+                       type="text"/>
+            </div>
 
             <button class="btn btn-primary" type="submit">Save</button>
         </form>
@@ -54,8 +54,9 @@
                 selectedAuthor: ''
             }
         },
-        mounted: function(){
-            console.log(this.id + " " + this.title + " " + this.authorNames + " " + this.selectedAuthor)
+        created: function () {
+            this.authorNames = this.authorNames.split(',');
+            this.selectedAuthor = this.authorNames[0];
         },
         methods: {
             editBook: function () {
@@ -63,7 +64,7 @@
                 let payload = {
                     id: this.id,
                     title: this.title,
-                    // selectedAuthor: this.selectedAuthor
+                    selectedAuthor: this.selectedAuthor
                 };
                 const options = {
                     method: 'POST',

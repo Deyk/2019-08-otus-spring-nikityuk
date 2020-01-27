@@ -24,7 +24,8 @@ let router = new VueRouter({
         {
             path: '/books/:id',
             name: 'bookEdit',
-            component: httpVueLoader(booksEditPath)
+            component: httpVueLoader(booksEditPath),
+            props: true
         }
     ]
 });

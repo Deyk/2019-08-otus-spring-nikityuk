@@ -44,7 +44,7 @@
             </thead>
             <tbody>
             <tr v-for="book in books">
-                <th>{{book.id}}</th>
+                <td>{{book.id}}</td>
                 <td>{{book.title}}</td>
                 <td>
                     <div v-for="author in book.authors">
@@ -52,7 +52,7 @@
                     </div>
                 </td>
                 <td>
-                    <router-link :to="{name: 'bookEdit', params:{id: book.id, title: book.title}}"
+                    <router-link :to="{name: 'bookEdit', params:{id: book.id, title: book.title, authorNames:getAuthorNames(book)}}"
                                  class="btn btn-primary btn-sm">Edit
                     </router-link>
                 </td>
@@ -123,7 +123,6 @@
                 let map = book.authors.map(author => {
                     return author.name;
                 });
-                console.log(map.toString());
                 return map.toString();
             }
         }
