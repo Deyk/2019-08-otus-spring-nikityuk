@@ -1,15 +1,17 @@
 package ru.otus.spring.library.rest;
 
+import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.rest.model.AuthorDto;
 import ru.otus.spring.library.service.AuthorService;
 import ru.otus.spring.library.service.LibraryServiceException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class AuthorController {
@@ -21,9 +23,8 @@ public class AuthorController {
     }
 
     @GetMapping("/authors")
-    public List<AuthorDto> getAllAuthors() {
-        List<Author> allAuthors = authorService.getAllAuthors();
-        return allAuthors.stream().map(AuthorDto::toDto).collect(Collectors.toList());
+    public Mono<List<AuthorDto>> getAllAuthors() {
+        return authorService.getAllAuthors().map(AuthorDto::toDto).collectList();
     }
 
     @PostMapping("/authors/add")
@@ -33,18 +34,18 @@ public class AuthorController {
     }
 
     @PostMapping("/authors/edit")
-    public AuthorDto editAuthors(@RequestBody AuthorDto authorDto) throws LibraryServiceException {
-        Author author = authorService.updateAuthor(authorDto.getId(), authorDto.getName());
-        return new AuthorDto(author);
+    public Publisher<ResponseEntity<AuthorDto>> editAuthors(@RequestBody AuthorDto authorDto) {
+        return Mono.just(authorDto)
+                .flatMap(a -> authorService.updateAuthor(a.getId(), a.getName()))
+                .map(a -> ResponseEntity
+                        .ok()
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .build());
     }
 
     @DeleteMapping("/authors/delete")
     public ResponseEntity deleteAuthor(@RequestParam("id") String id) {
-        try {
-            authorService.deleteAuthorById(id);
-        } catch (LibraryServiceException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        authorService.deleteAuthorById(id);
         return ResponseEntity.ok().body(true);
     }
 

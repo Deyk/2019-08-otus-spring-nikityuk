@@ -1,18 +1,16 @@
 package ru.otus.spring.library.service;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.spring.library.domain.Author;
-
-import java.util.List;
 
 public interface AuthorService {
 
-    Author addAuthor(String name);
+    Mono<Author> addAuthor(String name);
 
-    Author updateAuthor(String id, String name) throws LibraryServiceException;
+    Mono<Author> updateAuthor(String id, String name);
 
-    Author getAuthorById(String id) throws LibraryServiceException;
+    Mono<Void> deleteAuthorById(String Id);
 
-    void deleteAuthorById(String Id) throws LibraryServiceException;
-
-    List<Author> getAllAuthors();
+    Flux<Author> getAllAuthors();
 }
